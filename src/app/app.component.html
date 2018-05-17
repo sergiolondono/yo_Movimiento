@@ -1,53 +1,35 @@
-<mat-checkbox>Show details</mat-checkbox>
+<style>
+  .nav-link, .navbar-brand{
+      color:#ffc107 !important;
+  }
 
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Add Course" type="text" (keyup.enter)="add(course)" #course>
-</mat-form-field>
+  a:hover {
+      color:yellow !important;
+  }
+</style>
 
-<mat-grid-list *ngFor="let course of courses$ | async" cols="7" rowHeight="2:1">
-    <mat-grid-tile><mat-icon>assignment</mat-icon> {{ course.$value }} -- {{ course.$key}}  </mat-grid-tile>
-    <mat-grid-tile> <button mat-raised-button color="primary" (click)="update(course)">Update</button></mat-grid-tile>
-    <mat-grid-tile><button mat-raised-button color="warn" (click)="delete(course)">Delete</button></mat-grid-tile>
-  </mat-grid-list>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" 
+  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+  aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-<mat-list>
-  <mat-list-item *ngFor="let author of authors$ | async">
-    <mat-icon>person_pin</mat-icon>  {{ author.$value }}
-  </mat-list-item>
-</mat-list>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" 
+      placeholder="Número de cédula" #userIdentification
+       aria-label="Search">
+      <button class="btn btn-outline-warning my-2 my-sm-0"  
+      (click)="validateUserRoute(userIdentification.value)">Ingresar</button>
+    </form>
+  </div>
+</nav>
 
-<mat-list>
-  <mat-list-item *ngFor="let student of students$ | async">
-    <mat-icon>school</mat-icon> {{ student.email }} -- {{ student.name }}
-  </mat-list-item>
-</mat-list>
-
-<p>
-  {{ student$ | async | json }}
-</p>
-
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Add Student" type="text" (keyup.enter)="addStudent(student)" #student>
-</mat-form-field>
-
-<mat-list *ngIf="student$ | async as student">
- <mat-list-item> <mat-icon>person_add</mat-icon> {{ student.email }} -- {{ student.name }}</mat-list-item>
-</mat-list>
-
-<mat-form-field class="example-full-width">
-<input 
-matInput 
-placeholder="Student To Search" 
-type="text" 
-(keyup.enter)="getStudentbyEmail(studentToSearch)" 
-#studentToSearch>
-</mat-form-field>
-
-<div *ngIf="student3$">
-  Cantidad de Estudiantes: {{ student3$.length }}
-  <mat-list>
-      <mat-list-item *ngFor="let studentFilter of student3$">
-        <mat-icon>school</mat-icon> {{ studentFilter.email }} -- {{ studentFilter.name }}
-      </mat-list-item>
-  </mat-list>
-</div>
+<router-outlet></router-outlet>

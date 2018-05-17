@@ -1,78 +1,36 @@
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
+//import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  courses$: FirebaseListObservable<any[]>;
-  authors$;
-  author$;
-  students$: FirebaseListObservable<any[]>;
-  student$;
-  queryStudent$;
-  student3$;
+  users = [
+    {identification: '7', name: 'Sergio Londoño', profile: '1'},
+    {identification: '1017588974', name: 'Julian Sanchez', profile: '2'},
+    {identification: '1015487569', name: 'Walter Quiroga', profile: '2'}
+  ];
 
-  constructor(private db: AngularFireDatabase) {
-    this.courses$ = db.list('/courses');
-    this.authors$ = db.list('/authors');
-    this.students$ = db.list('/students');
-    this.student$ = db.object('/students/1');
+   constructor(private router: Router) { }
 
-    // const student2$ = db.list('/students', {
-    //   query: {
-    //     orderByChild: 'email',
-    //     equalTo: name$
-    //   }
-    // });
-    // student2$.subscribe(student => console.log(student));
-    // name$.next('jhonwi@gmai.com');
-  }
+   ngOnInit(){
+    this.router.navigate(['/home'])
+  }  
 
-  getStudentbyEmail(student: HTMLInputElement) {
-    const name$ = new Subject<string>();
-    this.queryStudent$ = this.db.list('/students', {
-      query: {
-        orderByChild: 'email',
-        equalTo: name$
-      }
-    }).subscribe(data => this.student3$ = data);
-    name$.next(student.value);
-  }
-
-  add(course: HTMLInputElement) {
-    this.courses$.push(course.value);
-    course.value = '';
-  }
-
-  addStudent(student: HTMLInputElement) {
-    this.students$.push({
-      email: student.value,
-      name: student.value
-    });
-  }
-
-  update(course) {
-    this.db.object('/courses/' + course.$key)
-      .set(course.$value + ' UPDATED'); // To primitive value or a complex object
-      // ** Set method updates all property **
-      // .set({
-      //   title: course.$value + ' UPDATED',
-      //   price: 150
-      // });
-      // ** Update method only updates the properties we have listed on object**
-      // .update({
-      //   title: course.$value + ' UPDATED',
-      //    price: 150
-      // });
-  }
-
-  delete(course) {
-    this.db.object('/courses/' + course.$key)
-    .remove()
-    .then(x => console.log('Deleted'));
+  public validateUserRoute(userIdentification: any){
+    let person: any;
+    person = this.users.find(u => u.identification == userIdentification);
+    if(person){
+      if(person.profile == '1')
+        this.router.navigate(['/videosAssignment'])
+      else if(person.profile == '2')
+        this.router.navigate(['/videosUser'])
+    }
+    else{
+      alert("El usuario no se encuentra registrado en el sistema");
+    }
   }
 }
