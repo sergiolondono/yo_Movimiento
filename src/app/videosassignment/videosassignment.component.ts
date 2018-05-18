@@ -22,6 +22,14 @@ export class VideosassignmentComponent implements OnInit {
   private isVisibleLast: boolean = false;
   private videosSelected: any[] = [];
 
+  private canShowListVideos: boolean = false;
+
+  pacients = [
+    { cedulaPaciente: '114785236', nombre: 'Santiago Cruz'},
+    { cedulaPaciente: '115785554', nombre: 'Carlos Cantillo'},
+    { cedulaPaciente: '116785145', nombre: 'Fernando Martínez'}
+  ];
+
    constructor(private youtubePlaylist:YoutubePlaylist) { }
 
    getplaylist() {
@@ -107,6 +115,17 @@ export class VideosassignmentComponent implements OnInit {
 
     public saveList(listVideos: any){
       console.log(listVideos);
-  }
+    }
 
+    public onChange(idPatient){
+      if(idPatient != 0)
+        this.canShowListVideos = true;
+      else
+        this.canShowListVideos = false;
+    }
+
+    public deleteVideo(videoUser: any){
+      this.videosSelected
+      .splice(this.videosSelected.findIndex(vs => vs.videoId==videoUser.videoId), 1);
+    }
 }

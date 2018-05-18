@@ -1,4 +1,6 @@
-//import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
+
+
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,29 +10,46 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  users = [
-    {identification: '7', name: 'Sergio Londoño', profile: '1'},
-    {identification: '1017588974', name: 'Julian Sanchez', profile: '2'},
-    {identification: '1015487569', name: 'Walter Quiroga', profile: '2'}
+  usersInDb = [
+    {cedula: '7', name: 'Sergio Londoño', perfil: '1'},
+    {cedula: '1017588974', name: 'Julian Sanchez', perfil: '2'},
+    {cedula: '1015487569', name: 'Walter Quiroga', perfil: '2'}
   ];
 
-   constructor(private router: Router) { }
+  // usersInDb: any[];
+
+    constructor(private router: Router
+      //, db: AngularFireDatabase
+    ) { 
+     
+  //    db.list('/usuarios')
+  //    .subscribe(usersInDb =>{
+  //      this.usersInDb = usersInDb;
+  //      console.log(this.usersInDb);
+  //    });
+    }
 
    ngOnInit(){
-    this.router.navigate(['/home'])
+    this.router.navigate(['/home']);
   }  
 
   public validateUserRoute(userIdentification: any){
     let person: any;
-    person = this.users.find(u => u.identification == userIdentification);
+    person = this.usersInDb.find(u => u.cedula == userIdentification);
     if(person){
-      if(person.profile == '1')
-        this.router.navigate(['/videosAssignment'])
-      else if(person.profile == '2')
-        this.router.navigate(['/videosUser'])
+      if(person.perfil == '1')
+      {
+        this.router.navigate(['/videosAssignment']);
+      }        
+      else if(person.perfil == '2')
+      {
+        this.router.navigate(['/videosUser']);
+      }        
     }
     else{
       alert("El usuario no se encuentra registrado en el sistema");
+      this.router.navigate(['/home']);
     }
   }
+
 }

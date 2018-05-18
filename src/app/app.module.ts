@@ -1,4 +1,4 @@
-import { MatComponentsModule } from './mat-components/mat-components.module';
+//import { MatComponentsModule } from './mat-components/mat-components.module';
 import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +15,7 @@ import { VideosassignmentComponent } from './videosassignment/videosassignment.c
 import { VideosuserComponent } from './videosuser/videosuser.component';
 import { HttpUtilService } from './services/http-util-service';
 import { YoutubePlaylist } from './services/youtube-playlist';
+import { HttpModule } from '@angular/http';
 
 const appRoutes: Routes = [ 
   {
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    MatComponentsModule,
+    //MatComponentsModule,
+    HttpModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true }

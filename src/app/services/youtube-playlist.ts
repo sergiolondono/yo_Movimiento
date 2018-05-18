@@ -1,6 +1,6 @@
 import { Playlist } from './../models/playlist';
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers  } from '@angular/http';
+import { Response, RequestOptions, Headers, Http  } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpUtilService } from './http-util-service';
 

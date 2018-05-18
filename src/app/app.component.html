@@ -26,10 +26,39 @@
       <input class="form-control mr-sm-2" 
       placeholder="Número de cédula" #userIdentification
        aria-label="Search">
-      <button class="btn btn-outline-warning my-2 my-sm-0"  
-      (click)="validateUserRoute(userIdentification.value)">Ingresar</button>
+      <button class="btn btn-outline-warning my-2 my-sm-0"  type="button"
+      (click)="validateUserRoute(userIdentification.value) ; $event.preventDefault()">Ingresar</button>
     </form>
   </div>
 </nav>
 
+<script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.1.0/email.min.js"></script>
+<script>
+  (function() {
+    emailjs.init("user_FnFxZhZ5LvhCxd0h1paQb");
+
+    var service_id = 'gmail';
+    var template_id = 'feedback';
+    var template_params = {
+    name: 'John',
+    reply_email: 'john@doe.com',
+    message: 'This is awesome!'
+    };
+
+emailjs.send(service_id,template_id,template_params);
+
+    // var templateParams = {
+    //       name: 'James',
+    //       notes: 'Check this out!'
+    //   };
+       
+    //   emailjs.send('gmail', 'template_CwYrVRdw', templateParams)
+    //       .then(function(response) {
+    //          console.log('SUCCESS!', response.status, response.text);
+    //       }, function(error) {
+    //          console.log('FAILED...', error);
+    //       });
+    })();
+
+</script>
 <router-outlet></router-outlet>

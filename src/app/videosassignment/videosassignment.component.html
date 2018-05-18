@@ -1,4 +1,25 @@
 <div class="row">
+    <div class="col-11 container">
+      <div class="card text-center" 
+      style="width:100%;margin-top:1%;">
+          <div class="card-header">
+              <img class="card-img-top" 
+          style="width: 5%; height: 5%;"
+          src="https://static.wixstatic.com/media/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png/v1/fill/w_110,h_116,al_c,usm_0.66_1.00_0.01/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png" 
+          alt="Card image cap">Pacientes
+            </div>
+          <div class="card-body">
+            <h5 class="card-title">Selección de pacientes</h5>
+            <select class="form-control col-6 offset-3" (change)="onChange($event.target.value)">
+              <option value="0">-- Seleccione su paciente --</option>
+              <option *ngFor="let pacient of pacients" value=pacient.cedula>{{pacient.nombre}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="row" *ngIf="canShowListVideos">
   <div class="col-6">
       <div class="container">
           <div class="text-center form-group">
@@ -67,6 +88,7 @@
                   <th>Image</th>
                   <th>URL</th>
                   <th>Description</th>
+                  <th>Borrar</th>
                 </tr>
               </thead>
               <tbody>
@@ -74,6 +96,7 @@
                   <th><img src="{{videoUser.imageUrl}}" alt="{{videoUser.title}}"></th>
                   <td><a href="https://www.youtube.com/watch?v={{videoUser.videoId}} ">{{videoUser.title}}</a> </td>                    
                   <td>{{videoUser.description}}</td>
+                  <td><button class="btn btn-danger" (click)="deleteVideo(videoUser)">Borrar</button></td>
                 </tr>
               </tbody>
             </table>   
