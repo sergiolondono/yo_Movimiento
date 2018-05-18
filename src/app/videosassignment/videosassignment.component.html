@@ -12,7 +12,7 @@
             <h5 class="card-title">Selección de pacientes</h5>
             <select class="form-control col-6 offset-3" (change)="onChange($event.target.value)">
               <option value="0">-- Seleccione su paciente --</option>
-              <option *ngFor="let pacient of pacients" value=pacient.cedula>{{pacient.nombre}}</option>
+              <option *ngFor="let patient of patients$ | async" value=patient.cedulaPaciente>{{patient.cedulaPaciente}}</option>
             </select>
           </div>
         </div>

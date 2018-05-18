@@ -17,6 +17,9 @@ import { HttpUtilService } from './services/http-util-service';
 import { YoutubePlaylist } from './services/youtube-playlist';
 import { HttpModule } from '@angular/http';
 
+// https://github.com/angular/angularfire2/issues/1078
+// https://github.com/angular/angularfire2/blob/master/docs/auth/getting-started.md
+
 const appRoutes: Routes = [ 
   {
     path: 'home',

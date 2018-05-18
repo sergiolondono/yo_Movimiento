@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { YoutubePlaylist } from '../services/youtube-playlist';
 import { Playlist } from "../models/playlist";
+import { AngularFireDatabase } from 'angularfire2/database-deprecated';
+import { Subject } from 'rxjs/Subject';
+import { switchMap } from 'rxjs/operator/switchMap';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-videosassignment',
@@ -24,13 +28,27 @@ export class VideosassignmentComponent implements OnInit {
 
   private canShowListVideos: boolean = false;
 
-  pacients = [
-    { cedulaPaciente: '114785236', nombre: 'Santiago Cruz'},
-    { cedulaPaciente: '115785554', nombre: 'Carlos Cantillo'},
-    { cedulaPaciente: '116785145', nombre: 'Fernando Martínez'}
-  ];
+  // pacients = [
+  //   { cedulaPaciente: '114785236', nombre: 'Santiago Cruz'},
+  //   { cedulaPaciente: '115785554', nombre: 'Carlos Cantillo'},
+  //   { cedulaPaciente: '116785145', nombre: 'Fernando Martínez'}
+  // ];
+   pacients: any[];
+   patients$;
+   private dbPath: string = '/customers';
+   private key: string = '52546';
+   constructor(private youtubePlaylist:YoutubePlaylist, db: AngularFireDatabase) { 
 
-   constructor(private youtubePlaylist:YoutubePlaylist) { }
+     //this.patients$ = db.list('/fisioxpaciente');
+
+     this.patients$ = db.list('/fisioxpaciente', {
+       query:{
+         
+         orderByChild: 'cedulaFisio'
+       }
+     });
+    console.log(this.patients$);
+   }
 
    getplaylist() {
   

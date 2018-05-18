@@ -30,7 +30,7 @@ export class AppComponent {
     }
 
    ngOnInit(){
-    this.router.navigate(['/home']);
+    this.router.navigate(['/videosAssignment']);
   }  
 
   public validateUserRoute(userIdentification: any){
