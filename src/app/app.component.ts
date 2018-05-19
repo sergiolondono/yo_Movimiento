@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   usersInDb = [
-    {cedula: '7', name: 'Sergio Londoño', perfil: '1'},
+    {cedula: '71316663', name: 'Sergio Londoño', perfil: '1'},
     {cedula: '1017588974', name: 'Julian Sanchez', perfil: '2'},
     {cedula: '1015487569', name: 'Walter Quiroga', perfil: '2'}
   ];
@@ -30,7 +30,7 @@ export class AppComponent {
     }
 
    ngOnInit(){
-    this.router.navigate(['/videosAssignment']);
+    this.router.navigate(['/home']);
   }  
 
   public validateUserRoute(userIdentification: any){
@@ -39,7 +39,7 @@ export class AppComponent {
     if(person){
       if(person.perfil == '1')
       {
-        this.router.navigate(['/videosAssignment']);
+        this.router.navigate(['/videosAssignment'], { queryParams: { userIdentification: userIdentification } });
       }        
       else if(person.perfil == '2')
       {

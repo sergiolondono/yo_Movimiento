@@ -4,7 +4,7 @@ import { Playlist } from "../models/playlist";
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 import { Subject } from 'rxjs/Subject';
 import { switchMap } from 'rxjs/operator/switchMap';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-videosassignment',
@@ -36,18 +36,30 @@ export class VideosassignmentComponent implements OnInit {
    pacients: any[];
    patients$;
    private dbPath: string = '/customers';
-   private key: string = '52546';
-   constructor(private youtubePlaylist:YoutubePlaylist, db: AngularFireDatabase) { 
+   private userRegistred: any;
+   private sub: any;
 
-     //this.patients$ = db.list('/fisioxpaciente');
+   ngOnInit(){
+    this.getplaylist();
+ }
+
+   constructor(private youtubePlaylist:YoutubePlaylist, db: AngularFireDatabase,
+    private route: ActivatedRoute,
+    private router: Router) { 
+
+      this.sub = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        this.userRegistred = params['userIdentification'] ;
+      });
 
      this.patients$ = db.list('/fisioxpaciente', {
        query:{
-         
-         orderByChild: 'cedulaFisio'
+         orderByChild: 'cedulaFisio',
+         equalTo: Number(this.userRegistred)
        }
      });
-    console.log(this.patients$);
    }
 
    getplaylist() {
@@ -109,10 +121,6 @@ export class VideosassignmentComponent implements OnInit {
                console.log(this.playlistYoutube.items);
       });
   }
-
-  ngOnInit(){
-       this.getplaylist();
-    }
     
     public getRow(video: any, observation: string){
       if(!this.videosSelected.find(vs => vs.videoId==video.snippet.resourceId.videoId))
