@@ -8,7 +8,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy:firebase": "ng build --prod && firebase deploy",
+    "deploy:gh": "ng build --prod --base-href='https://sergiolondono.github.io/yo_Movimiento/' && ngh"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +27,7 @@
     "@angular/router": "^5.0.0",
     "angularfire2": "^5.0.0-rc.5-next",
     "as": "^0.4.1",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "4.1.1",
     "core-js": "^2.4.1",
     "emailjs": "^2.0.0",
     "firebase": "^4.9.0",

@@ -26,7 +26,7 @@ export class VideosassignmentComponent implements OnInit {
   private isVisibleLast: boolean = false;
   private videosSelected: any[] = [];
 
-  private canShowListVideos: boolean = false;
+  public canShowListVideos: boolean = false;
 
   // pacients = [
   //   { cedulaPaciente: '114785236', nombre: 'Santiago Cruz'},
