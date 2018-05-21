@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { YoutubePlaylist } from '../services/youtube-playlist';
 import { Playlist } from "../models/playlist";
-import { AngularFireDatabase } from 'angularfire2/database-deprecated';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 import { Subject } from 'rxjs/Subject';
 import { switchMap } from 'rxjs/operator/switchMap';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -27,14 +27,15 @@ export class VideosassignmentComponent implements OnInit {
   private videosSelected: any[] = [];
 
   public canShowListVideos: boolean = false;
+  public patientSelected: any;
+  videoxPaciente$: FirebaseListObservable<any[]>;
 
-  // pacients = [
-  //   { cedulaPaciente: '114785236', nombre: 'Santiago Cruz'},
-  //   { cedulaPaciente: '115785554', nombre: 'Carlos Cantillo'},
-  //   { cedulaPaciente: '116785145', nombre: 'Fernando Martínez'}
-  // ];
+  // this.videosSelected = this.videoxPaciente$;
+
+
    pacients: any[];
    patients$;
+
    private dbPath: string = '/customers';
    private userRegistred: any;
    private sub: any;
@@ -43,7 +44,7 @@ export class VideosassignmentComponent implements OnInit {
     this.getplaylist();
  }
 
-   constructor(private youtubePlaylist:YoutubePlaylist, db: AngularFireDatabase,
+   constructor(private youtubePlaylist:YoutubePlaylist, private db: AngularFireDatabase,
     private route: ActivatedRoute,
     private router: Router) { 
 
@@ -60,6 +61,8 @@ export class VideosassignmentComponent implements OnInit {
          equalTo: Number(this.userRegistred)
        }
      });
+
+     this.videoxPaciente$ = db.list('/videosxpaciente');
    }
 
    getplaylist() {
@@ -122,15 +125,16 @@ export class VideosassignmentComponent implements OnInit {
       });
   }
     
-    public getRow(video: any, observation: string){
+    public getRow(video: any, observation: string, patientSelected: string){
       if(!this.videosSelected.find(vs => vs.videoId==video.snippet.resourceId.videoId))
       {
           this.videosSelected
           .push({
-            imageUrl: video.snippet.thumbnails.default.url,
+            imagenUrl: video.snippet.thumbnails.default.url,
             videoId: video.snippet.resourceId.videoId,
-            title: video.snippet.title,
-            description: observation
+            titulo: video.snippet.title,
+            observacion: observation,
+            cedulaPaciente: patientSelected
           });
       }
       else{
@@ -139,13 +143,39 @@ export class VideosassignmentComponent implements OnInit {
       }
     }
 
-    public saveList(listVideos: any){
-      console.log(listVideos);
+    public saveList(listVideos: any, selectedOptionPatients: any){
+
+      for(let i = 0; i < listVideos.length; i++){
+        this.videoxPaciente$.push({
+          imagenUrl: listVideos[i].imagenUrl,
+          videoId: listVideos[i].videoId,
+          titulo: listVideos[i].titulo,
+          observacion: listVideos[i].observacion,
+          cedulaPaciente: selectedOptionPatients          
+        });
+      }      
     }
 
-    public onChange(idPatient){
-      if(idPatient != 0)
+    public onChange(args){
+      if(args.target.value != 0)
+      {
+       //this.videosSelected.map(data => this.videoxPaciente$); ;
+       this.db.list('/videosxpaciente',
+        {
+          query:{
+            orderByChild: 'cedulaPaciente',
+            equalTo: args.target.value
+          }
+        })
+          .subscribe(usersInDb =>{
+          this.videosSelected = usersInDb;
+        });
+
+       this.patientSelected = args.target.options[args.target.selectedIndex].text;
         this.canShowListVideos = true;
+
+        console.log(this.videosSelected);
+      }
       else
         this.canShowListVideos = false;
     }

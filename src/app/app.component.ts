@@ -10,38 +10,42 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  usersInDb = [
-    {cedula: '71316663', name: 'Sergio Londoño', perfil: '1'},
-    {cedula: '1017588974', name: 'Julian Sanchez', perfil: '2'},
-    {cedula: '1015487569', name: 'Walter Quiroga', perfil: '2'}
-  ];
+  // usersInDb = [
+  //   {cedula: '71316663', name: 'Sergio Londoño', perfil: '1'},
+  //   {cedula: '1017588974', name: 'Julian Sanchez', perfil: '2'},
+  //   {cedula: '1015487569', name: 'Walter Quiroga', perfil: '2'}
+  // ];
 
-  // usersInDb: any[];
+   usersInDb: any[];
+   person: any;
 
-    constructor(private router: Router
-      //, db: AngularFireDatabase
+    constructor(private router: Router, db: AngularFireDatabase
     ) { 
-     
-  //    db.list('/usuarios')
-  //    .subscribe(usersInDb =>{
-  //      this.usersInDb = usersInDb;
-  //      console.log(this.usersInDb);
-  //    });
+     db.list('/usuarios')
+     .subscribe(usersInDb =>{
+       this.usersInDb = usersInDb;
+       console.log(this.usersInDb);
+     });
     }
 
    ngOnInit(){
     this.router.navigate(['/home']);
   }  
 
-  public validateUserRoute(userIdentification: any){
-    let person: any;
-    person = this.usersInDb.find(u => u.cedula == userIdentification);
-    if(person){
-      if(person.perfil == '1')
+
+    collapsed = true;
+    toggleCollapsed(): void {
+      this.collapsed = !this.collapsed;
+    }
+
+  public validateUserRoute(userIdentification: any){    
+    this.person = this.usersInDb.find(u => u.cedula == userIdentification);
+    if(this.person){
+      if(this.person.perfil == '1')
       {
         this.router.navigate(['/videosAssignment'], { queryParams: { userIdentification: userIdentification } });
       }        
-      else if(person.perfil == '2')
+      else if(this.person.perfil == '2')
       {
         this.router.navigate(['/videosUser']);
       }        
