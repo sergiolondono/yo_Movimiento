@@ -5,6 +5,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { Subject } from 'rxjs/Subject';
 import { switchMap } from 'rxjs/operator/switchMap';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { resolve } from 'url';
+import { reject } from 'q';
 
 @Component({
   selector: 'app-videosassignment',
@@ -152,7 +154,9 @@ export class VideosassignmentComponent implements OnInit {
           titulo: listVideos[i].titulo,
           observacion: listVideos[i].observacion,
           cedulaPaciente: selectedOptionPatients          
-        });
+        }).then((resp) => {
+          alert('setting Object OK:  '+ resp);
+        },(err) => alert(err));
       }      
     }
 
