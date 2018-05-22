@@ -27,13 +27,12 @@ export class VideosassignmentComponent implements OnInit {
   private isVisibleNext: boolean = true;
   private isVisibleLast: boolean = false;
   private videosSelected: any[] = [];
+  private videosSavedDb: any[] = [];
+  private videoToDelete: any[] = [];
 
   public canShowListVideos: boolean = false;
   public patientSelected: any;
   videoxPaciente$: FirebaseListObservable<any[]>;
-
-  // this.videosSelected = this.videoxPaciente$;
-
 
    pacients: any[];
    patients$;
@@ -75,15 +74,9 @@ export class VideosassignmentComponent implements OnInit {
     //   playlist => this.playlist = playlist,
     //   error => this.msgErro = error});
 
-      // this.playlistYoutube = this.youtubePlaylist.getplaylist("PLPrQRyn2uGR0sskMv0XC9gTrJHWRm35Ji").subscribe(value => {
-      //   this.playlist = value.map( function( elem ) {
-      //       return elem;
-      //   } ); 
-      // });
-
-       //this.playlistYoutube = this.youtubePlaylist.getplaylist("PLPrQRyn2uGR0sskMv0XC9gTrJHWRm35Ji")
-       //this.playlistYoutube = this.youtubePlaylist.getplaylist("UUJl1YajcPWTeJNsQhGyMIMg")
-       //this.playlistYoutube = this.youtubePlaylist.getplaylist("PL9oRsvMekJFwjbL6B0s5TLHm1gU1zm8wv")
+       //  "PLPrQRyn2uGR0sskMv0XC9gTrJHWRm35Ji"
+       //  "UUJl1YajcPWTeJNsQhGyMIMg"
+       //  "PL9oRsvMekJFwjbL6B0s5TLHm1gU1zm8wv"
        this.playlistYoutube = this.youtubePlaylist.getplaylist("PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC")
        .subscribe(value => {
               this.playlistYoutube = value;
@@ -116,7 +109,6 @@ export class VideosassignmentComponent implements OnInit {
           }
     }
 
-    
     this.playlistYoutube = this.youtubePlaylist
     .playlistList_page("PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC",pageToken)
     .subscribe(value => {
@@ -146,24 +138,25 @@ export class VideosassignmentComponent implements OnInit {
     }
 
     public saveList(listVideos: any, selectedOptionPatients: any){
-
       for(let i = 0; i < listVideos.length; i++){
-        this.videoxPaciente$.push({
-          imagenUrl: listVideos[i].imagenUrl,
-          videoId: listVideos[i].videoId,
-          titulo: listVideos[i].titulo,
-          observacion: listVideos[i].observacion,
-          cedulaPaciente: selectedOptionPatients          
-        }).then((resp) => {
-          alert('setting Object OK:  '+ resp);
-        },(err) => alert(err));
-      }      
-    }
+            this.videoxPaciente$.push({
+              imagenUrl: listVideos[i].imagenUrl,
+              videoId: listVideos[i].videoId,
+              titulo: listVideos[i].titulo,
+              observacion: listVideos[i].observacion,
+              cedulaPaciente: selectedOptionPatients          
+            }).then((resp) => {                            
+              console.log('setting Object OK:  '+ resp);
+            },(err) => alert(err));
+            if(i == listVideos.length - 1){
+              this.videosSelected.splice(0, this.videosSelected.length);
+            }
+        }  
+      }
 
     public onChange(args){
       if(args.target.value != 0)
       {
-       //this.videosSelected.map(data => this.videoxPaciente$); ;
        this.db.list('/videosxpaciente',
         {
           query:{
@@ -172,16 +165,22 @@ export class VideosassignmentComponent implements OnInit {
           }
         })
           .subscribe(usersInDb =>{
-          this.videosSelected = usersInDb;
+          this.videosSavedDb = usersInDb;
         });
 
        this.patientSelected = args.target.options[args.target.selectedIndex].text;
-        this.canShowListVideos = true;
+       this.canShowListVideos = true;
 
-        console.log(this.videosSelected);
+        console.log(this.videosSavedDb);
       }
       else
         this.canShowListVideos = false;
+    }
+
+    public deleteVideoDb(videoUser: any){
+      this.db.object('/videosxpaciente/' + videoUser.$key)
+      .remove()
+      .then(resp => console.log("Object: " + videoUser.$key + " Deleted"));
     }
 
     public deleteVideo(videoUser: any){
