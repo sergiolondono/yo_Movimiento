@@ -21,47 +21,37 @@ export class HomeComponent implements OnInit {
     this.setUserVideos()
   }
 
-   setUserVideos(){
+   setUserVideos(){   
 
-    //  this.usuariosApp$.push({
-    //   cedula: '71555888',
-    //   nombre: 'Francisco Garzón',
-    //   perfil: '2',
-    //   videos: [
-    //     {
-    //       urlVideo: 'urlVideo4.com',
-    //       videoId: 'asjdfkj489'
-    //     },
-    //     {
-    //       urlVideo: 'urlVideo5.com',
-    //       videoId: 'hhdfg45454d'
-    //     },
-    //     {
-    //       urlVideo: 'urlVideo6.com',
-    //       videoId: 'dfg45-46d4'
-    //     },
-    //     {
-    //       urlVideo: 'urlVideo7.com',
-    //       videoId: 'jdfkjklf9834jsdf'
-    //     }
-    //   ]       
-    // }).then((resp) => {                            
-    //   console.log('setting Object OK:  '+ resp);
-    // },(err) => alert(err));
+     this.usuariosApp$.push({
+      cedula: '43903558',
+      nombre: 'Valeria Escobar',
+      perfil: '2',
+      videos: [
+        {
+          imagenUrl: 'https://i.ytimg.com/vi/QMzoY48g924/default.jpg',
+          observacion: 'REpetir 3 veces en cada sesión',
+          titulo: '21. (ASP.NET Core 1.0 & MVC) Entity Framework Core Overview',
+          videoId: 'QMzoY48g924'
+        }
+      ]       
+    }).then((resp) => {                            
+      console.log('setting Object OK:  '+ resp);
+    },(err) => alert(err));
 
 
-    this.db.list('/usuariosApp/', {
-      query:{
-        orderByChild: 'cedula',
-        equalTo: '71555888'
-      }
-    })
-     .subscribe(userInDb =>{
-       this.videosByUser = userInDb[0].videos;
-       //this.userInDb = userInDb;
-       this.keyRowUser = userInDb[0].$key;
-       console.log(this.videosByUser);
-     });
+    // this.db.list('/usuariosApp/', {
+    //   query:{
+    //     orderByChild: 'cedula',
+    //     equalTo: '71555888'
+    //   }
+    // })
+    //  .subscribe(userInDb =>{
+    //    this.videosByUser = userInDb[0].videos;
+    //    //this.userInDb = userInDb;
+    //    this.keyRowUser = userInDb[0].$key;
+    //    console.log(this.videosByUser);
+    //  });
 
    }
 
@@ -85,6 +75,6 @@ export class HomeComponent implements OnInit {
     .update({
       videos: this.videosByUser
     });
-    
+
    }
 }

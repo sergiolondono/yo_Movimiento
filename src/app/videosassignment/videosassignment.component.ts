@@ -15,6 +15,7 @@ import { reject } from 'q';
 })
 export class VideosassignmentComponent implements OnInit {
 
+  keyRowUser: any;
   private playlist:Playlist[];
   private playlistYoutube:any;
 
@@ -41,6 +42,8 @@ export class VideosassignmentComponent implements OnInit {
    private userRegistred: any;
    private sub: any;
 
+   videosByUser;
+   
    ngOnInit(){
     this.getplaylist();
  }
@@ -110,8 +113,7 @@ export class VideosassignmentComponent implements OnInit {
     }
 
     this.playlistYoutube = this.youtubePlaylist
-    //.playlistList_page("PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC",pageToken)
-    .playlistList_page("PLfYS6LODaQb3OaEaWdOhRPtQqNDMxWgTD",pageToken)
+    .playlistList_page("PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC",pageToken)
     .subscribe(value => {
               this.playlistYoutube = value;
               this.resultCurrently = value.items.length;
@@ -120,16 +122,15 @@ export class VideosassignmentComponent implements OnInit {
       });
   }
     
-    public getRow(video: any, observation: string, patientSelected: string){
+    public addRow(video: any, observation: string, patientSelected: string){
       if(!this.videosSelected.find(vs => vs.videoId==video.snippet.resourceId.videoId))
       {
           this.videosSelected
           .push({
             imagenUrl: video.snippet.thumbnails.default.url,
-            videoId: video.snippet.resourceId.videoId,
-            titulo: video.snippet.title,
             observacion: observation,
-            cedulaPaciente: patientSelected
+            titulo: video.snippet.title,
+            videoId: video.snippet.resourceId.videoId
           });
       }
       else{
@@ -140,39 +141,72 @@ export class VideosassignmentComponent implements OnInit {
 
     public saveList(listVideos: any, selectedOptionPatients: any){
       for(let i = 0; i < listVideos.length; i++){
-            this.videoxPaciente$.push({
-              imagenUrl: listVideos[i].imagenUrl,
-              videoId: listVideos[i].videoId,
-              titulo: listVideos[i].titulo,
-              observacion: listVideos[i].observacion,
-              cedulaPaciente: selectedOptionPatients          
-            }).then((resp) => {                            
-              console.log('setting Object OK:  '+ resp);
-            },(err) => alert(err));
+
+        /// Update sobre usuariosApp
+        this.videosByUser
+        .push(
+          {
+            imagenUrl: listVideos[i].imagenUrl,
+            observacion: listVideos[i].observacion,
+            titulo: listVideos[i].titulo,
+            videoId: listVideos[i].videoId
+          });
+
+        this.db.object('/usuariosApp/' + this.keyRowUser)
+        .update({
+          videos: this.videosByUser
+        });
+
+            // this.videoxPaciente$.push({
+            //   imagenUrl: listVideos[i].imagenUrl,
+            //   videoId: listVideos[i].videoId,
+            //   titulo: listVideos[i].titulo,
+            //   observacion: listVideos[i].observacion,
+            //   cedulaPaciente: selectedOptionPatients          
+            // }).then((resp) => {                            
+            //   console.log('setting Object OK:  '+ resp);
+            // },(err) => alert(err));
+
             if(i == listVideos.length - 1){
               this.videosSelected.splice(0, this.videosSelected.length);
             }
+
         }  
       }
 
     public onChange(args){
       if(args.target.value != 0)
       {
-       this.db.list('/videosxpaciente',
-        {
-          query:{
-            orderByChild: 'cedulaPaciente',
-            equalTo: args.target.value
-          }
-        })
-          .subscribe(usersInDb =>{
-          this.videosSavedDb = usersInDb;
-        });
+      //  this.db.list('/videosxpaciente',
+      //   {
+      //     query:{
+      //       orderByChild: 'cedulaPaciente',
+      //       equalTo: args.target.value
+      //     }
+      //   })
+      //     .subscribe(usersInDb =>{
+      //     this.videosSavedDb = usersInDb;
+      //   });
 
        this.patientSelected = args.target.options[args.target.selectedIndex].text;
        this.canShowListVideos = true;
 
         console.log(this.videosSavedDb);
+
+        ///////////////////////////////////////////////////////
+        this.db.list('/usuariosApp/', {
+          query:{
+            orderByChild: 'cedula',
+            equalTo: args.target.value //'114587'
+          }
+        })
+         .subscribe(userInDb =>{
+           this.videosByUser = userInDb[0].videos;
+           //this.userInDb = userInDb;
+           this.keyRowUser = userInDb[0].$key;
+           console.log(this.videosByUser);
+         });
+
       }
       else
         this.canShowListVideos = false;
