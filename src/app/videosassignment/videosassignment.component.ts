@@ -200,12 +200,18 @@ export class VideosassignmentComponent implements OnInit {
             equalTo: args.target.value //'114587'
           }
         })
-         .subscribe(userInDb =>{
-           this.videosByUser = userInDb[0].videos;
-           //this.userInDb = userInDb;
-           this.keyRowUser = userInDb[0].$key;
-           console.log(this.videosByUser);
-         });
+        .subscribe(userInDb =>{
+          if(userInDb.length > 0){
+             this.videosByUser =  userInDb[0].videos;
+             this.keyRowUser = userInDb[0].$key;
+          }
+          else{
+           this.videosByUser = null;
+          }
+          
+          console.log(this.videosByUser);
+        });
+
 
       }
       else
