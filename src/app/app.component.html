@@ -9,7 +9,7 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">Yo Movimiento</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" 
   data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
   aria-expanded="false" aria-label="Toggle navigation" (click)="toggleCollapsed()">
@@ -22,7 +22,18 @@
         <a class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li *ngIf="person">
-        <a *ngIf="person.perfil == 3" class="nav-link" routerLink="/usersapplication">Usuarios</a>
+          <!-- <div class="dropdown" *ngIf="person.perfil == 1">
+              <button type="button" class="btn btn-outline-warning  dropdown-toggle" 
+              data-toggle="dropdown">
+                Administración de usuarios
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/usersapplication">Crear Usuario</a>
+                <a class="dropdown-item" href="#">Consultar Usuarios</a>
+              </div>
+            </div> -->
+         <a *ngIf="person.perfil == 1" class="nav-link" routerLink="/usersapplication">Usuarios</a>
+      
       </li>
       <li *ngIf="person" class="nav-item nav-link">Bienvenido {{person.nombre}}!</li>
     </ul>

@@ -12,7 +12,8 @@ export class UserapplicationComponent implements OnInit {
   perfiles;
   username: any;
   usuariosApp$: FirebaseListObservable<any[]>;
-  
+  usersToShow: any[];
+
   constructor(private db: AngularFireDatabase) { 
     this.db.list('/perfiles/')
     .subscribe(profiles => {
@@ -20,13 +21,14 @@ export class UserapplicationComponent implements OnInit {
     });
 
     this.usuariosApp$ = db.list('/usuariosApp/');
+
+    db.list('/usuariosApp/')
+    .subscribe(usersToShow =>{
+      this.usersToShow = usersToShow;
+    });
   }
 
   ngOnInit() {
-  }
-
-  saveUser(userName, idUser){
-    alert(userName + idUser);
   }
 
   submit(f: NgForm){
@@ -53,6 +55,20 @@ export class UserapplicationComponent implements OnInit {
           console.log(fFields);
         }
      });     
+  }
+
+  deleteUser(user){
+    this.db.list('/usuariosApp/', {
+      query:{
+        orderByChild: 'cedula',
+        equalTo: user.cedula
+      }
+    })
+     .subscribe(userInDb =>{
+      if(userInDb.length > 0){
+        alert("");
+      }
+    })
   }
 
 }
