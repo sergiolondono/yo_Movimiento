@@ -1,3 +1,66 @@
-<p>
-  userapplication works!
-</p>
+
+<div class="container" style="width:100%;margin-top:1%;">
+    <div class="card" 
+    style="width:100%;margin-top:1%;">
+        <div class="card-header text-center">
+            <img class="card-img-top" 
+        style="width: 5%; height: 5%;"
+        src="https://static.wixstatic.com/media/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png/v1/fill/w_110,h_116,al_c,usm_0.66_1.00_0.01/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png" 
+        alt="Card image cap"><b>Administración deUsuarios</b>
+          </div>
+        <div class="card-body">
+          
+          <form class="col-10 offset-1" #f="ngForm" (ngSubmit)="submit(f)">
+              <div class="form-group">
+                <label for="idUser">Nombre usuario</label>
+                <input required
+                type="text" class="form-control" 
+                placeholder="Ingrese el nombre del  usuario"  
+                ngModel
+                name="username" 
+                #username="ngModel" 
+                id="username" >
+              </div>
+
+              <div class="alert alert-danger" *ngIf="username.touched && !username.valid">
+                <div *ngIf="username.errors.required">Nombre usuario es obligatorio</div>                
+              </div>
+
+              <div class="form-group">
+                <label for="idUser">Cédula usuario</label>
+                <input required
+                type="text" class="form-control" 
+                placeholder="Ingrese la cédula del  usuario" 
+                ngModel
+                name="idUser" 
+                #idUser="ngModel" 
+                id="idUser" >
+              </div>
+
+              <div class="alert alert-danger" *ngIf="idUser.touched && !idUser.valid">
+                  <div *ngIf="idUser.errors.required">Cédula usuario es obligatorio</div>                
+              </div>
+
+              <div class="form-group">
+                <label for="cmbPerfil">Perfil</label>
+                <select required
+                ngModel
+                name="cmbPerfil" 
+                #cmbPerfil="ngModel" 
+                id="cmbPerfil"
+                class="form-control">
+                  <option *ngFor="let perfil of perfiles" value="{{perfil.idPerfil}}">{{perfil.Nombre}}</option>
+                </select>
+              </div>
+
+              <div class="alert alert-danger" *ngIf="cmbPerfil.touched && !cmbPerfil.valid">
+                  <div *ngIf="cmbPerfil.errors.required">Debe seleccionar un perfil</div>                
+              </div>
+
+              <button class="btn btn-success btn-block" [disabled]="!f.valid">
+              <i class="fas fa-save"></i> Guardar usuario </button>
+            </form>
+
+        </div>
+      </div>
+</div>

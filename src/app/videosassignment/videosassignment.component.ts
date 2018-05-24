@@ -33,7 +33,7 @@ export class VideosassignmentComponent implements OnInit {
 
   public canShowListVideos: boolean = false;
   public patientSelected: any;
-  videoxPaciente$: FirebaseListObservable<any[]>;
+  //videoxPaciente$: FirebaseListObservable<any[]>;
 
    pacients: any[];
    patients$;
@@ -66,7 +66,7 @@ export class VideosassignmentComponent implements OnInit {
        }
      });
 
-     this.videoxPaciente$ = db.list('/videosxpaciente');
+     //this.videoxPaciente$ = db.list('/videosxpaciente');
    }
 
    getplaylist() {
@@ -218,10 +218,20 @@ export class VideosassignmentComponent implements OnInit {
         this.canShowListVideos = false;
     }
 
-    public deleteVideoDb(videoUser: any){
-      this.db.object('/videosxpaciente/' + videoUser.$key)
-      .remove()
-      .then(resp => console.log("Object: " + videoUser.$key + " Deleted"));
+    // public deleteVideoDb(videoUser: any){
+    //   this.db.object('/videosxpaciente/' + videoUser.$key)
+    //   .remove()
+    //   .then(resp => console.log("Object: " + videoUser.$key + " Deleted"));
+    // }
+
+    public deleteVideoAssignment(videoUser: any){
+      this.videosByUser
+      .splice(this.videosByUser.findIndex(vs => vs.videoId==videoUser.videoId), 1);
+  
+      this.db.object('/videosxpaciente/' + this.keyRowUser)
+      .update({
+        videos: this.videosByUser
+      });
     }
 
     public deleteVideo(videoUser: any){

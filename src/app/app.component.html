@@ -21,10 +21,13 @@
       <li class="nav-item active">
         <a class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
       </li>
+      <li *ngIf="person">
+        <a *ngIf="person.perfil == 3" class="nav-link" routerLink="/usersapplication">Usuarios</a>
+      </li>
       <li *ngIf="person" class="nav-item nav-link">Bienvenido {{person.nombre}}!</li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" 
+    <form class="form-inline my-2 my-lg-0" (keydown.enter)="$event.preventDefault()">
+      <input class="form-control mr-sm-2" autofocus
       placeholder="Número de cédula" #userIdentification
        aria-label="Search">
       <button class="btn btn-outline-warning my-2 my-sm-0"  type="button"

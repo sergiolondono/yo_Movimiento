@@ -7,6 +7,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database-deprecated';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -54,6 +55,8 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     //MatComponentsModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(
       appRoutes,
