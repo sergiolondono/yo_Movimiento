@@ -39,18 +39,18 @@ export class HomeComponent implements OnInit {
     // },(err) => alert(err));
 
 
-    this.db.list('/usuariosApp/', {
-      query:{
-        orderByChild: 'cedula',
-        equalTo: '71555888'
-      }
-    })
-     .subscribe(userInDb =>{
-       this.videosByUser = userInDb[0].videos;
-       //this.userInDb = userInDb;
-       this.keyRowUser = userInDb[0].$key;
-       console.log(this.videosByUser);
-     });
+    // this.db.list('/usuariosApp/', {
+    //   query:{
+    //     orderByChild: 'cedula',
+    //     equalTo: '71555888'
+    //   }
+    // })
+    //  .subscribe(userInDb =>{
+    //    this.videosByUser = userInDb[0].videos;
+    //    //this.userInDb = userInDb;
+    //    this.keyRowUser = userInDb[0].$key;
+    //    console.log(this.videosByUser);
+    //  });
 
    }
 }

@@ -15,7 +15,7 @@
             <select class="form-control col-6 offset-3" #selectedOptionPatients
              (change)="onChange($event)">
               <option value="0">-- Seleccione su paciente --</option>
-              <option *ngFor="let patient of patients$ | async" 
+              <option *ngFor="let patient of patients$" 
               value={{patient.cedulaPaciente}}>{{patient.nombrePaciente}}</option>
             </select>
           </div>

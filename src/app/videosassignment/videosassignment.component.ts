@@ -59,15 +59,23 @@ export class VideosassignmentComponent implements OnInit {
         this.userRegistred = params['userIdentification'] ;
       });
 
-     this.patients$ = db.list('/fisioxpaciente', {
+      db.list('/usuariosApp/', {
        query:{
-         orderByChild: 'cedulaFisio',
-         equalTo: Number(this.userRegistred)
+         orderByChild: 'cedula',
+         equalTo: this.userRegistred
        }
-     });
-
-     //this.videoxPaciente$ = db.list('/videosxpaciente');
-   }
+        }).subscribe(userInDb =>{
+          if(userInDb.length > 0){
+            alert(userInDb);
+            this.patients$ =  userInDb[0].pacientes;
+            alert(this.patients$);
+        }
+        else{
+          this.patients$ = null;
+        }      
+    });
+     
+  }
 
    getplaylist() {
   
