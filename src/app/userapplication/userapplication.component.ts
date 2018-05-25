@@ -14,6 +14,8 @@ export class UserapplicationComponent implements OnInit {
   username: any;
   usuariosApp$: FirebaseListObservable<any[]>;
   usersToShow: any[];
+  userToShow: any[];
+  showUsers: boolean;
 
   constructor(private db: AngularFireDatabase) { 
     this.db.list('/perfiles/')
@@ -21,14 +23,37 @@ export class UserapplicationComponent implements OnInit {
       this.perfiles = profiles;
     });
 
-    db.list('/usuariosApp/')
-    .subscribe(usersToShow =>{
-      this.usersToShow = usersToShow;
-    });
+    this.getAllUsers();
+
+    this.showUsers = true;
   }
 
   ngOnInit() {
     this.usuariosApp$ = this.db.list('/usuariosApp/');
+  }
+
+  getAllUsers(){
+    this.db.list('/usuariosApp/')
+    .subscribe(usersToShow =>{
+      this.usersToShow = usersToShow;
+      this.showUsers = true;
+    });
+  }
+
+  searchUserbyId(textoBusqueda){
+    this.db.list('/usuariosApp/', {
+      query:{
+        orderByChild: 'cedula',
+        equalTo: textoBusqueda
+        }
+      })
+    .subscribe(userToShow =>{
+      if(userToShow.length > 0){
+        this.userToShow = userToShow;
+        this.showUsers = false;
+      }else this.showUsers = true;
+
+    });
   }
 
   submit(f: NgForm){
@@ -71,5 +96,4 @@ export class UserapplicationComponent implements OnInit {
       .remove()
       .then(resp => console.log("Object: " + user.$key + " Deleted"));
   }
-
 }

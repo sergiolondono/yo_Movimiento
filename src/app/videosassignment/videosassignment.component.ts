@@ -66,9 +66,7 @@ export class VideosassignmentComponent implements OnInit {
        }
         }).subscribe(userInDb =>{
           if(userInDb.length > 0){
-            alert(userInDb);
             this.patients$ =  userInDb[0].pacientes;
-            alert(this.patients$);
         }
         else{
           this.patients$ = null;
@@ -164,20 +162,9 @@ export class VideosassignmentComponent implements OnInit {
         .update({
           videos: this.videosByUser
         });
-
-            // this.videoxPaciente$.push({
-            //   imagenUrl: listVideos[i].imagenUrl,
-            //   videoId: listVideos[i].videoId,
-            //   titulo: listVideos[i].titulo,
-            //   observacion: listVideos[i].observacion,
-            //   cedulaPaciente: selectedOptionPatients          
-            // }).then((resp) => {                            
-            //   console.log('setting Object OK:  '+ resp);
-            // },(err) => alert(err));
-
-            if(i == listVideos.length - 1){
-              this.videosSelected.splice(0, this.videosSelected.length);
-            }
+        if(i == listVideos.length - 1){
+          this.videosSelected.splice(0, this.videosSelected.length);
+        }
 
         }  
       }
@@ -216,7 +203,6 @@ export class VideosassignmentComponent implements OnInit {
           else{
            this.videosByUser = null;
           }
-          
           console.log(this.videosByUser);
         });
 
