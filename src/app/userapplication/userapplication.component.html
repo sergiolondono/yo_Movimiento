@@ -68,7 +68,8 @@
                       <th style="color:#ffc107">Cédula</th>
                       <th style="color:#ffc107">Nombre</th>
                       <th style="color:#ffc107">Perfil</th>
-                      <th style="color:#ffc107">Borrar</th>                    
+                      <th style="color:#ffc107">Relación</th>
+                      <th style="color:#ffc107">Gestión</th>                    
                     </tr>
                   </thead>
                   <tbody>
@@ -76,8 +77,13 @@
                       <td>{{user.cedula}}</td>
                       <td>{{user.nombre}}</td>
                       <td>{{user.perfil}}</td>
+
+                      <td *ngIf="user.videos">Videos asociados: {{user.videos.length}}</td>
+                      <td *ngIf="user.pacientes">Pacientes asociados: {{user.pacientes.length}}</td> 
+                      <td *ngIf="!user.videos && !user.pacientes">--</td>
                       <td>
-                        <button class="btn btn-danger">
+                        <button *ngIf="!(user.videos || user.pacientes)" 
+                        class="btn btn-danger" (click)="deleteUser(user)">
                           Borrar</button>
                       </td>
                     </tr>
