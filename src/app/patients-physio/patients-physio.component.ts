@@ -15,11 +15,11 @@ export class PatientsPhysioComponent implements OnInit {
   patientsByPhysio$;
   patients$;
   physios$;
+  physiosPatientsList$;
   users$;
   path = '/usuariosApp/';
   assignedPatients: any[] = [];
   physioSelected: any;
-  pK$: any[] = [];
     
   ngOnInit() {
   }
@@ -54,7 +54,13 @@ export class PatientsPhysioComponent implements OnInit {
     })
     .subscribe(usersInDb  =>{
       this.physios$ = usersInDb;
+
+      this.physiosPatientsList$ = this.physios$
+      .filter(pp => pp.pacientes.length > 0);
+
+      console.log(this.physiosPatientsList$ );
     });
+    
   }
 
   onChange(eventArgs){
@@ -78,7 +84,7 @@ export class PatientsPhysioComponent implements OnInit {
   }
 
   savePatients(key){
-    
+
     this.db.object(this.path + key)
         .update({
           pacientes: this.assignedPatients
