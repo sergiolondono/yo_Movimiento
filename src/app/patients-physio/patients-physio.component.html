@@ -57,7 +57,11 @@
                   <tr *ngFor="let p of pp.pacientes">
                     <td><i class="fa fa-user-md"></i></td>
                     <td>{{p.nombrePaciente}}</td>  
-                    <td><button class="btn btn-danger">Borrar</button></td>                
+                    <td>
+                      <button 
+                          class="btn btn-danger" (click)="detachPatient(p, pp)">
+                            Borrar</button>
+                    </td>                
                   </tr>
                 </tbody>
                

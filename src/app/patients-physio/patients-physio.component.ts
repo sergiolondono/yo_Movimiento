@@ -15,7 +15,8 @@ export class PatientsPhysioComponent implements OnInit {
   patientsByPhysio$;
   patients$;
   physios$;
-  physiosPatientsList$;
+  physiosPatientsList$: any[] = [];
+  physiosPatientsListLocal: any[] = [];
   users$;
   path = '/usuariosApp/';
   assignedPatients: any[] = [];
@@ -55,10 +56,13 @@ export class PatientsPhysioComponent implements OnInit {
     .subscribe(usersInDb  =>{
       this.physios$ = usersInDb;
 
-      this.physiosPatientsList$ = this.physios$
-      .filter(pp => pp.pacientes.length > 0);
-
-      console.log(this.physiosPatientsList$ );
+      // Show configurations Physios by Patients
+      for(let i = 0; i < this.physios$.length ; i++){
+        if(this.physios$[i].pacientes){
+          this.physiosPatientsList$.push(this.physios$[i]
+          );
+        }
+      }
     });
     
   }
@@ -83,30 +87,70 @@ export class PatientsPhysioComponent implements OnInit {
     console.log(this.assignedPatients);
   }
 
+  detachPatient(p, physiosPatientsList){
+
+    // if(physiosPatientsList.pacientes.find((ap => ap.cedulaPaciente == p.cedulaPaciente)))
+    // {
+    //   physiosPatientsList.pacientes
+    //   .splice(this.assignedPatients.findIndex(ap => ap.cedulaPaciente == p.cedulaPaciente), 1);
+
+    //   this.db.object(this.path + physiosPatientsList.$key)
+    //   .update({
+    //     pacientes: physiosPatientsList.pacientes
+    //   });
+
+    //   this.db.list(this.path, {
+    //     query: {
+    //       orderByChild: 'cedula',
+    //       equalTo: p.cedulaPaciente
+    //     }
+    //   }).subscribe(user =>{
+    //     if(user.length > 0){
+    //       this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
+    //       .update({
+    //         tieneFisio: false
+    //       });
+    //     }
+    //   });
+    // }
+
+    console.log("Nombre: " + p.nombrePaciente +
+                " identificación: " + p.cedulaPaciente);
+  }
+
   savePatients(key){
 
-    this.db.object(this.path + key)
-        .update({
-          pacientes: this.assignedPatients
-        });
+    this.physiosPatientsListLocal = this.physios$.find(ap => ap.$key == key).pacientes;
 
-    for(let i=0; i < this.assignedPatients.length ; i++){
-      
-      this.db.list(this.path, {
-        query: {
-          orderByChild: 'cedula',
-          equalTo: this.assignedPatients[i].cedulaPaciente
-        }
-      }).subscribe(user =>{
-        if(user.length > 0){
-          this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
-          .update({
-            tieneFisio: true
-          });
-        }
-      });
-
+    for(let i=0 ; i < this.physiosPatientsListLocal.length ; i++){
+      this.assignedPatients.push({
+            cedulaPaciente: this.physiosPatientsListLocal[i].cedulaPaciente,
+            nombrePaciente: this.physiosPatientsListLocal[i].nombrePaciente
+          })
     }
-  }
+
+    console.log(this.assignedPatients);
+  //   this.db.object(this.path + key)
+  //       .update({
+  //         pacientes: this.assignedPatients
+  //       });
+
+  //   for(let i=0; i < this.assignedPatients.length ; i++){
+      
+  //     this.db.list(this.path, {
+  //       query: {
+  //         orderByChild: 'cedula',
+  //         equalTo: this.assignedPatients[i].cedulaPaciente
+  //       }
+  //     }).subscribe(user =>{
+  //       if(user.length > 0){
+  //         this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
+  //         .update({
+  //           tieneFisio: true
+  //         });
+  //       }
+  //     });
+  //   }
+   }
 
 }
