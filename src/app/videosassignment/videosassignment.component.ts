@@ -42,6 +42,8 @@ export class VideosassignmentComponent implements OnInit {
    private userRegistred: any;
    private sub: any;
 
+   pathListYoutube = "PLfYS6LODaQb0rqsKgWy0yKcSq9usfXxqd";
+
    videosByUser;
    
    ngOnInit(){
@@ -86,7 +88,10 @@ export class VideosassignmentComponent implements OnInit {
        //  "PLPrQRyn2uGR0sskMv0XC9gTrJHWRm35Ji"
        //  "UUJl1YajcPWTeJNsQhGyMIMg"
        //  "PL9oRsvMekJFwjbL6B0s5TLHm1gU1zm8wv"
-       this.playlistYoutube = this.youtubePlaylist.getplaylist("PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC")
+       //  "PLfYS6LODaQb0UtC49jMbiKAFTt7U_2sT7" 96 videos YoMovimiento
+       // "PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC" 56 videos .NET
+       // Bípedos PLfYS6LODaQb3y3QudVu9tweEYrd9mG9Vp
+       this.playlistYoutube = this.youtubePlaylist.getplaylist(this.pathListYoutube)
        .subscribe(value => {
               this.playlistYoutube = value;
               this.results = value.pageInfo["totalResults"];
@@ -119,7 +124,7 @@ export class VideosassignmentComponent implements OnInit {
     }
 
     this.playlistYoutube = this.youtubePlaylist
-    .playlistList_page("PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC",pageToken)
+    .playlistList_page(this.pathListYoutube,pageToken)
     .subscribe(value => {
               this.playlistYoutube = value;
               this.resultCurrently = value.items.length;
@@ -231,5 +236,39 @@ export class VideosassignmentComponent implements OnInit {
     public deleteVideo(videoUser: any){
       this.videosSelected
       .splice(this.videosSelected.findIndex(vs => vs.videoId==videoUser.videoId), 1);
+    }
+
+    private resetValuesListYoutube()
+    {
+      this.sumCurrently = 0;
+      this.isVisibleNext = true;
+      this.isVisibleLast = false;
+    }
+
+    public changePathYoutube(typeVideos){
+      switch(typeVideos) { 
+        case 'sedentes': { 
+          this.pathListYoutube = 'PLfYS6LODaQb0rqsKgWy0yKcSq9usfXxqd';
+          this.resetValuesListYoutube();
+          this.getplaylist();
+           break; 
+        } 
+        case 'bipedos': { 
+           this.pathListYoutube = 'PLfYS6LODaQb3y3QudVu9tweEYrd9mG9Vp';
+           this.resetValuesListYoutube();
+           this.getplaylist();
+           break; 
+        } 
+        case 'cuadrupedos': { 
+          this.pathListYoutube = 'PLfYS6LODaQb3UHoQm0EvGe51LVQJHBwrZ';
+          this.resetValuesListYoutube();
+          this.getplaylist();
+          break; 
+       } 
+        default: { 
+           //statements; 
+           break; 
+        } 
+     }
     }
 }

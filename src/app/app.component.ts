@@ -22,8 +22,8 @@ export class AppComponent {
   constructor(private router: Router, private db: AngularFireDatabase) { }
 
    ngOnInit(){
-    this.router.navigate(['/home']);
-    //this.router.navigate(['/usersapplication']);
+    //this.router.navigate(['/home']);
+     this.router.navigate(['/patientsPhysio']);
   }  
 
 
@@ -61,8 +61,8 @@ export class AppComponent {
       }
       else{
         this.router.navigate(['/home']);
-        alert("El usuario no se encuentra registrado en el sistema");
-        
+        this.person = null;
+        alert("El usuario no se encuentra registrado en el sistema");        
       }
     });
     
