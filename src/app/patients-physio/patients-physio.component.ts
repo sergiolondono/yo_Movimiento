@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
+import { fadeInItems } from '@angular/material';
 
 @Component({
   selector: 'app-patients-physio',
@@ -18,6 +19,7 @@ export class PatientsPhysioComponent implements OnInit {
   path = '/usuariosApp/';
   assignedPatients: any[] = [];
   physioSelected: any;
+  pK$: any[] = [];
     
   ngOnInit() {
   }
@@ -54,6 +56,7 @@ export class PatientsPhysioComponent implements OnInit {
       this.physios$ = usersInDb;
     });
   }
+
   onChange(eventArgs){
     console.log(eventArgs);
   }
@@ -75,16 +78,28 @@ export class PatientsPhysioComponent implements OnInit {
   }
 
   savePatients(key){
+    
     this.db.object(this.path + key)
         .update({
           pacientes: this.assignedPatients
         });
 
     for(let i=0; i < this.assignedPatients.length ; i++){
-      this.db.object(this.path + key) // Modificar la propiedad tieneFisio del paciente
-        .update({
-          tieneFisio: true
-        });
+      
+      this.db.list(this.path, {
+        query: {
+          orderByChild: 'cedula',
+          equalTo: this.assignedPatients[i].cedulaPaciente
+        }
+      }).subscribe(user =>{
+        if(user.length > 0){
+          this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
+          .update({
+            tieneFisio: true
+          });
+        }
+      });
+
     }
   }
 

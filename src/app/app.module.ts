@@ -17,6 +17,7 @@ import { VideosuserComponent } from './videosuser/videosuser.component';
 import { HttpUtilService } from './services/http-util-service';
 import { YoutubePlaylist } from './services/youtube-playlist';
 import { HttpModule } from '@angular/http';
+import { PatientsPhysioComponent } from './patients-physio/patients-physio.component';
 
 // https://github.com/angular/angularfire2/issues/1078
 // https://github.com/angular/angularfire2/blob/master/docs/auth/getting-started.md
@@ -38,6 +39,10 @@ const appRoutes: Routes = [
     path: 'videosUser',
     component: VideosuserComponent
   },
+  {
+    path: 'patientsPhysio',
+    component: PatientsPhysioComponent
+  },
   { path: '**', component: HomeComponent }
 ];
 
@@ -47,7 +52,8 @@ const appRoutes: Routes = [
     HomeComponent,
     UserapplicationComponent,
     VideosassignmentComponent,
-    VideosuserComponent
+    VideosuserComponent,
+    PatientsPhysioComponent
   ],
   imports: [
     BrowserModule,
