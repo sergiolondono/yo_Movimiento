@@ -10,11 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  // usersInDb = [
-  //   {cedula: '71316663', name: 'Sergio Londoño', perfil: '1'},
-  //   {cedula: '1017588974', name: 'Julian Sanchez', perfil: '2'},
-  //   {cedula: '1015487569', name: 'Walter Quiroga', perfil: '2'}
-  // ];
+  // angular 4 firebase authentication
+  // https://gist.github.com/codediodeio/5e02b605f2ab015f2fb1e60497bd46bf
 
    userInDb: any[];
    person: any;

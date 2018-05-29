@@ -25,32 +25,5 @@ export class HomeComponent implements OnInit {
    }
   
   ngOnInit() {
-    //this.setUserVideos();
   }
-
-   setUserVideos(){   
-
-    //  this.usuariosApp$.push({
-    //   cedula: '71',
-    //   nombre: 'Andres Gallo',
-    //   perfil: '1'       
-    // }).then((resp) => {                            
-    //   console.log('setting Object OK:  '+ resp);
-    // },(err) => alert(err));
-
-
-    // this.db.list('/usuariosApp/', {
-    //   query:{
-    //     orderByChild: 'cedula',
-    //     equalTo: '71555888'
-    //   }
-    // })
-    //  .subscribe(userInDb =>{
-    //    this.videosByUser = userInDb[0].videos;
-    //    //this.userInDb = userInDb;
-    //    this.keyRowUser = userInDb[0].$key;
-    //    console.log(this.videosByUser);
-    //  });
-
-   }
 }
