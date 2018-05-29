@@ -27,7 +27,6 @@
       <li *ngIf="person">
          <a *ngIf="person.perfil == 1" class="nav-link" routerLink="/usersapplication">Usuarios</a>    
       </li>
-      <li *ngIf="person" class="nav-item nav-link">Bienvenido {{person.nombre}}!</li>
     </ul>
     <form class="form-inline my-2 my-lg-0" (keydown.enter)="$event.preventDefault()">
       <input class="form-control mr-sm-2" autofocus
@@ -39,34 +38,11 @@
   </div>
 </nav>
 
+<div class="container">
+    <label *ngIf="person" class="nav-item nav-link">
+        <i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;
+        Bienvenido {{person.nombre}}!
+    </label>
+</div>
 
-<script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.1.0/email.min.js"></script>
-<script>
-  (function() {
-    emailjs.init("user_FnFxZhZ5LvhCxd0h1paQb");
-
-    var service_id = 'gmail';
-    var template_id = 'feedback';
-    var template_params = {
-    name: 'John',
-    reply_email: 'john@doe.com',
-    message: 'This is awesome!'
-    };
-
-emailjs.send(service_id,template_id,template_params);
-
-    // var templateParams = {
-    //       name: 'James',
-    //       notes: 'Check this out!'
-    //   };
-       
-    //   emailjs.send('gmail', 'template_CwYrVRdw', templateParams)
-    //       .then(function(response) {
-    //          console.log('SUCCESS!', response.status, response.text);
-    //       }, function(error) {
-    //          console.log('FAILED...', error);
-    //       });
-    })();
-
-</script>
 <router-outlet></router-outlet>
