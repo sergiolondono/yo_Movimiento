@@ -1,3 +1,35 @@
-<p>
-  videosuser works!
-</p>
+
+<div class="container" style="width:100%;margin-top:1%;">
+  <div class="card" 
+  style="width:100%;margin-top:1%;">
+      <div class="card-header text-center">
+          <img class="card-img-top" 
+      style="width: 5%; height: 5%;"
+      src="https://static.wixstatic.com/media/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png/v1/fill/w_110,h_116,al_c,usm_0.66_1.00_0.01/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png" 
+      alt="Card image cap"><b>Paciente</b>
+        </div>
+      <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered text-center">
+              <thead class="thead-dark">
+                  <tr>
+                    <th style="color:#ffc107">Imagen</th>
+                    <th style="color:#ffc107">URL</th>
+                    <th style="color:#ffc107">Observaciones</th>                  
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let video of patientVideos$">
+                    <th><img src="{{video.imagenUrl}}" 
+                      alt="{{video.titulo}}"></th>
+                    <td><a href="https://www.youtube.com/watch?v={{video.videoId}}"
+                      target="_blank">{{video.titulo}}</a> </td>
+                    <td>{{video.observacion}}</td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+</div>

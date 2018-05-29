@@ -23,7 +23,7 @@ export class AppComponent {
 
    ngOnInit(){
    this.router.navigate(['/home']);
-     // this.router.navigate(['/patientsPhysio']);
+    //this.router.navigate(['/videosAssignment']);
   }  
   
     collapsed = true;
@@ -50,7 +50,7 @@ export class AppComponent {
             }        
             else if(this.person.perfil == '2')
             {
-              this.router.navigate(['/videosUser']);
+              this.router.navigate(['/videosUser'],  { queryParams: { userIdentification: userIdentification } });
             }  
             else if(this.person.perfil == '1')
             {

@@ -16,6 +16,7 @@ export class UserapplicationComponent implements OnInit {
   usersToShow: any[];
   userToShow: any[];
   showUsers: boolean;
+  path = '/usuariosApp/';
 
   constructor(private db: AngularFireDatabase) { 
     this.db.list('/perfiles/')
@@ -29,11 +30,11 @@ export class UserapplicationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.usuariosApp$ = this.db.list('/usuariosApp/');
+    this.usuariosApp$ = this.db.list(this.path);
   }
 
   getAllUsers(){
-    this.db.list('/usuariosApp/')
+    this.db.list(this.path)
     .subscribe(usersToShow =>{
       this.usersToShow = usersToShow;
       this.showUsers = true;
@@ -41,7 +42,7 @@ export class UserapplicationComponent implements OnInit {
   }
 
   searchUserbyId(textoBusqueda){
-    this.db.list('/usuariosApp/', {
+    this.db.list(this.path, {
       query:{
         orderByChild: 'cedula',
         equalTo: textoBusqueda
@@ -60,7 +61,7 @@ export class UserapplicationComponent implements OnInit {
    
     const fFields = f.form.controls;
     
-    this.db.list('/usuariosApp/', {
+    this.db.list(this.path, {
       query:{
         orderByChild: 'cedula',
         equalTo: fFields.idUser.value
@@ -92,7 +93,7 @@ export class UserapplicationComponent implements OnInit {
   }
 
   deleteUser(user){
-      this.db.object('/usuariosApp/' + user.$key)
+      this.db.object(this.path + user.$key)
       .remove()
       .then(resp => console.log("Object: " + user.$key + " Deleted"));
   }

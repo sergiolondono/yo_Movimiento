@@ -44,7 +44,7 @@ export class VideosassignmentComponent implements OnInit {
 
    pathListYoutube = "PLfYS6LODaQb0rqsKgWy0yKcSq9usfXxqd";
 
-   videosByUser;
+   videosByUser: any[] =[];
    
    path = '/usuariosApp/';
 
@@ -125,7 +125,33 @@ export class VideosassignmentComponent implements OnInit {
       });
   }
     
-    public addRow(video: any, observation: string, patientSelected: string){
+  public onChange(args){
+    if(args.target.value != 0)
+    {
+     this.patientSelected = args.target.options[args.target.selectedIndex].text;
+     this.canShowListVideos = true;
+
+      this.db.list(this.path, {
+        query:{
+          orderByChild: 'cedula',
+          equalTo: args.target.value //'114587'
+        }
+      })
+      .subscribe(userInDb =>{
+       if(userInDb.length > 0){
+         if(userInDb[0].videos){
+          this.videosByUser =  userInDb[0].videos;
+         }
+           this.keyRowUser = userInDb[0].$key;
+        }
+      });
+      console.log(this.videosByUser);
+    }
+    else
+      this.canShowListVideos = false;
+  }
+
+  public addRow(video: any, observation: string, patientSelected: string){
       if(!this.videosSelected.find(vs => vs.videoId==video.snippet.resourceId.videoId))
       {
           this.videosSelected
@@ -140,6 +166,7 @@ export class VideosassignmentComponent implements OnInit {
         this.videosSelected
         .splice(this.videosSelected.findIndex(vs => vs.videoId==video.snippet.resourceId.videoId), 1);
       }
+      console.log(this.videosByUser);
     }
 
     public saveList(listVideos: any, selectedOptionPatients: any){
@@ -165,38 +192,6 @@ export class VideosassignmentComponent implements OnInit {
 
         }  
       }
-
-    public onChange(args){
-      if(args.target.value != 0)
-      {
-       this.patientSelected = args.target.options[args.target.selectedIndex].text;
-       this.canShowListVideos = true;
-
-        console.log(this.videosSavedDb);
-
-        ///////////////////////////////////////////////////////
-        this.db.list(this.path, {
-          query:{
-            orderByChild: 'cedula',
-            equalTo: args.target.value //'114587'
-          }
-        })
-        .subscribe(userInDb =>{
-          if(userInDb.length > 0){
-             this.videosByUser =  userInDb[0].videos;
-             this.keyRowUser = userInDb[0].$key;
-          }
-          else{
-           this.videosByUser = null;
-          }
-          console.log(this.videosByUser);
-        });
-
-
-      }
-      else
-        this.canShowListVideos = false;
-    }
 
     public deleteVideoAssignment(videoUser: any){
       this.videosByUser
