@@ -46,6 +46,8 @@ export class VideosassignmentComponent implements OnInit {
 
    videosByUser;
    
+   path = '/usuariosApp/';
+
    ngOnInit(){
     this.getplaylist();
  }
@@ -61,7 +63,7 @@ export class VideosassignmentComponent implements OnInit {
         this.userRegistred = params['userIdentification'] ;
       });
 
-      db.list('/usuariosApp/', {
+      db.list(this.path, {
        query:{
          orderByChild: 'cedula',
          equalTo: this.userRegistred
@@ -78,16 +80,6 @@ export class VideosassignmentComponent implements OnInit {
   }
 
    getplaylist() {
-  
-    // this.youtubePlaylist.getplaylist("PLPrQRyn2uGR0sskMv0XC9gTrJHWRm35Ji")
-    //   .subscribe(
-    //    value => {console.log(value),
-    //   playlist => this.playlist = playlist,
-    //   error => this.msgErro = error});
-
-       //  "PLPrQRyn2uGR0sskMv0XC9gTrJHWRm35Ji"
-       //  "UUJl1YajcPWTeJNsQhGyMIMg"
-       //  "PL9oRsvMekJFwjbL6B0s5TLHm1gU1zm8wv"
        //  "PLfYS6LODaQb0UtC49jMbiKAFTt7U_2sT7" 96 videos YoMovimiento
        // "PLYMOUCVo86jGwWoSoEkpgnCJ3IPXIQmIC" 56 videos .NET
        // Bípedos PLfYS6LODaQb3y3QudVu9tweEYrd9mG9Vp
@@ -163,7 +155,7 @@ export class VideosassignmentComponent implements OnInit {
             videoId: listVideos[i].videoId
           });
 
-        this.db.object('/usuariosApp/' + this.keyRowUser)
+        this.db.object(this.path + this.keyRowUser)
         .update({
           videos: this.videosByUser
         });
@@ -177,24 +169,13 @@ export class VideosassignmentComponent implements OnInit {
     public onChange(args){
       if(args.target.value != 0)
       {
-      //  this.db.list('/videosxpaciente',
-      //   {
-      //     query:{
-      //       orderByChild: 'cedulaPaciente',
-      //       equalTo: args.target.value
-      //     }
-      //   })
-      //     .subscribe(usersInDb =>{
-      //     this.videosSavedDb = usersInDb;
-      //   });
-
        this.patientSelected = args.target.options[args.target.selectedIndex].text;
        this.canShowListVideos = true;
 
         console.log(this.videosSavedDb);
 
         ///////////////////////////////////////////////////////
-        this.db.list('/usuariosApp/', {
+        this.db.list(this.path, {
           query:{
             orderByChild: 'cedula',
             equalTo: args.target.value //'114587'
@@ -217,17 +198,11 @@ export class VideosassignmentComponent implements OnInit {
         this.canShowListVideos = false;
     }
 
-    // public deleteVideoDb(videoUser: any){
-    //   this.db.object('/videosxpaciente/' + videoUser.$key)
-    //   .remove()
-    //   .then(resp => console.log("Object: " + videoUser.$key + " Deleted"));
-    // }
-
     public deleteVideoAssignment(videoUser: any){
       this.videosByUser
       .splice(this.videosByUser.findIndex(vs => vs.videoId==videoUser.videoId), 1);
   
-      this.db.object('/videosxpaciente/' + this.keyRowUser)
+      this.db.object(this.path + this.keyRowUser)
       .update({
         videos: this.videosByUser
       });

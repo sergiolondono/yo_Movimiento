@@ -22,8 +22,8 @@ export class AppComponent {
   constructor(private router: Router, private db: AngularFireDatabase) { }
 
    ngOnInit(){
-    //this.router.navigate(['/home']);
-     this.router.navigate(['/patientsPhysio']);
+   this.router.navigate(['/home']);
+     // this.router.navigate(['/patientsPhysio']);
   }  
   
     collapsed = true;

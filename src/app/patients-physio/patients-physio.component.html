@@ -12,7 +12,7 @@
           <div class="card-body">    
             <div class="row">
               <div class="col-6">
-                  <select class="form-control" #selectedPhysio (change)="onChange($event)">
+                  <select class="form-control" #selectedPhysio>
                       <option value="0">-- Seleccione Fisioterapeuta --</option>
                       <option *ngFor="let user of physios$" value={{user.$key}}>
                         {{user.nombre}}
