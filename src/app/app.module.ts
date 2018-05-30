@@ -19,6 +19,9 @@ import { YoutubePlaylist } from './services/youtube-playlist';
 import { HttpModule } from '@angular/http';
 import { PatientsPhysioComponent } from './patients-physio/patients-physio.component';
 
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthService } from './services/auth.service';
+
 // https://github.com/angular/angularfire2/issues/1078
 // https://github.com/angular/angularfire2/blob/master/docs/auth/getting-started.md
 
@@ -64,12 +67,13 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    AngularFireAuthModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true }
     )
   ],
-  providers: [HttpUtilService,YoutubePlaylist],
+  providers: [HttpUtilService,YoutubePlaylist,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

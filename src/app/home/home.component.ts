@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
+import { AuthService } from '../services/auth.service';
+
 
 @Component({
   selector: 'app-home',
@@ -13,14 +15,16 @@ export class HomeComponent implements OnInit {
   cedulaUserInDb: any;
   keyRowUser: any;
   usuariosApp$: FirebaseListObservable<any[]>;
-
-  constructor(private db: AngularFireDatabase) { 
+  authentication;
+  constructor(private db: AngularFireDatabase, aAuth: AuthService) { 
     this.usuariosApp$ = db.list('/usuariosApp/');
 
-    this.db.list('/perfiles/')
-    .subscribe(profiles => {
-      this.perfiles = profiles;
-    });
+      aAuth.anonymousLogin();
+
+      this.db.list('/perfiles/')
+      .subscribe(profiles => {
+        this.perfiles = profiles;
+      });
 
    }
   
