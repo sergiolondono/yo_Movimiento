@@ -171,27 +171,27 @@ export class VideosassignmentComponent implements OnInit {
 
     public saveList(listVideos: any, selectedOptionPatients: any){
       for(let i = 0; i < listVideos.length; i++){
+          /// Update sobre usuariosApp
+          this.videosByUser
+          .push(
+            {
+              imagenUrl: listVideos[i].imagenUrl,
+              observacion: listVideos[i].observacion,
+              titulo: listVideos[i].titulo,
+              videoId: listVideos[i].videoId
+            });
 
-        /// Update sobre usuariosApp
-        this.videosByUser
-        .push(
-          {
-            imagenUrl: listVideos[i].imagenUrl,
-            observacion: listVideos[i].observacion,
-            titulo: listVideos[i].titulo,
-            videoId: listVideos[i].videoId
+          this.db.object(this.path + this.keyRowUser)
+          .update({
+            videos: this.videosByUser
           });
-
-        this.db.object(this.path + this.keyRowUser)
-        .update({
-          videos: this.videosByUser
-        });
-        if(i == listVideos.length - 1){
-          this.videosSelected.splice(0, this.videosSelected.length);
-        }
+          
+          if(i == listVideos.length - 1){
+            this.videosSelected.splice(0, this.videosSelected.length);
+          }
 
         }  
-      }
+    }
 
     public deleteVideoAssignment(videoUser: any){
       this.videosByUser
