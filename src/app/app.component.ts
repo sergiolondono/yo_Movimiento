@@ -28,8 +28,7 @@ export class AppComponent {
       this.collapsed = !this.collapsed;
     }
 
-  public validateUserRoute(userIdentification: any){  
-    
+  public validateUserRoute(userIdentification: any){      
     this.db.list('/usuariosApp/', {
       query:{
         orderByChild: 'cedula',
