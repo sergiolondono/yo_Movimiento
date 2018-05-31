@@ -15,17 +15,14 @@ export class AppComponent {
 
    userInDb: any[];
    person: any;
-   errorMessage;
-   successMessage;
+
   constructor(private router: Router, private db: AngularFireDatabase) { }
 
    ngOnInit(){
    this.router.navigate(['/home']);
     //this.router.navigate(['/videosAssignment']);
-
-    //var credential = firebase.auth.EmailAuthProvider.credential(email, password);
   }  
-  
+
     collapsed = true;
     toggleCollapsed(): void {
       this.collapsed = !this.collapsed;
