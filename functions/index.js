@@ -31,9 +31,9 @@ exports.httpEmail = functions.https.onRequest((req, res)=> {
     })
     .then((response) => {
         if(response.body){
-             res.send(response.body);
+             return res.send(response.body);
         } else{
-             res.end();
+             return res.end();
         }
     })
     .catch((err) => {
