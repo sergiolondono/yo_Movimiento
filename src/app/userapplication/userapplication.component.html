@@ -96,7 +96,11 @@
                     <tr *ngFor="let user of usersToShow">
                       <td>{{user.cedula}}</td>
                       <td>{{user.nombre}}</td>
-                      <td>{{user.perfil}}</td>
+                      <td [ngSwitch]=user.perfil>
+                        <label *ngSwitchCase="1">Administrador</label>
+                        <label *ngSwitchCase="2">Paciente</label>
+                        <label *ngSwitchCase="3">Fisioterapeuta</label>
+                      </td>
 
                       <td *ngIf="user.videos">Videos asociados: {{user.videos.length}}</td>
                       <td *ngIf="user.pacientes">Pacientes asociados: {{user.pacientes.length}}</td> 

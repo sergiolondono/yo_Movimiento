@@ -33,6 +33,7 @@ export class VideosassignmentComponent implements OnInit {
 
   public canShowListVideos: boolean = false;
   public patientSelected: any;
+  public typeVideos: any = 'SEDENTES';
   //videoxPaciente$: FirebaseListObservable<any[]>;
 
    pacients: any[];
@@ -138,12 +139,12 @@ export class VideosassignmentComponent implements OnInit {
         }
       })
       .subscribe(userInDb =>{
-       if(userInDb.length > 0){
-         if(userInDb[0].videos){
+         if(userInDb[0].hasOwnProperty("videos")){
           this.videosByUser =  userInDb[0].videos;
+         }else{
+          this.videosByUser = [];
          }
-           this.keyRowUser = userInDb[0].$key;
-        }
+           this.keyRowUser = userInDb[0].$key;        
       });
       console.log(this.videosByUser);
     }
@@ -221,18 +222,21 @@ export class VideosassignmentComponent implements OnInit {
           this.pathListYoutube = 'PLfYS6LODaQb0rqsKgWy0yKcSq9usfXxqd';
           this.resetValuesListYoutube();
           this.getplaylist();
+          this.typeVideos = 'SEDENTES';
            break; 
         } 
         case 'bipedos': { 
            this.pathListYoutube = 'PLfYS6LODaQb3y3QudVu9tweEYrd9mG9Vp';
            this.resetValuesListYoutube();
            this.getplaylist();
+           this.typeVideos = 'BÍPEDOS';
            break; 
         } 
         case 'cuadrupedos': { 
           this.pathListYoutube = 'PLfYS6LODaQb3UHoQm0EvGe51LVQJHBwrZ';
           this.resetValuesListYoutube();
           this.getplaylist();
+          this.typeVideos = 'CUADRÚPEDOS';
           break; 
        } 
         default: { 

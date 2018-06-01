@@ -37,17 +37,22 @@ export class PatientsPhysioComponent implements OnInit {
         this.userRegistred = params['userIdentification'] ;
       });
 
-     db.list(this.path, {
+     this.patients$ = db.list(this.path, {
       query: {
         orderByChild: 'perfil',
         equalTo: '2'
-      }
-    })
-    .subscribe(usersInDb  =>{
-      this.patients$ = usersInDb;
-    });
+        }
+      })
+    // .subscribe(usersInDb  =>{
+    //   this.patients$ = usersInDb;
+    // });
 
-    db.list(this.path, {
+    this.loadPatientsPhysios();
+    
+  }
+
+  loadPatientsPhysios(){
+    this.db.list(this.path, {
       query:{ 
         orderByChild: 'perfil',
         equalTo: '3'
@@ -63,9 +68,7 @@ export class PatientsPhysioComponent implements OnInit {
         }
       }
     });
-    
   }
-
   assignPatient(idUser, nameUser){
     if(!this.assignedPatients.find(ap => ap.cedulaPaciente == idUser))
     {
@@ -81,38 +84,42 @@ export class PatientsPhysioComponent implements OnInit {
   }
 
   savePatients(key){
-
-    this.physiosPatientsListLocal = this.physios$.find(ap => ap.$key == key).pacientes;
-    if(this.physiosPatientsListLocal){
-       for(let i=0 ; i < this.physiosPatientsListLocal.length ; i++){
-            this.assignedPatients.push({
-                  cedulaPaciente: this.physiosPatientsListLocal[i].cedulaPaciente,
-                  nombrePaciente: this.physiosPatientsListLocal[i].nombrePaciente
-                });
+    if(key != '-'){
+        this.physiosPatientsListLocal = this.physios$.find(ap => ap.$key == key).pacientes;
+        if(this.physiosPatientsListLocal){
+          for(let i=0 ; i < this.physiosPatientsListLocal.length ; i++){
+                this.assignedPatients.push({
+                      cedulaPaciente: this.physiosPatientsListLocal[i].cedulaPaciente,
+                      nombrePaciente: this.physiosPatientsListLocal[i].nombrePaciente
+                    });
+            }
         }
-    }
 
-    this.db.object(this.path + key)
-        .update({
-          pacientes: this.assignedPatients
-        });
+        this.db.object(this.path + key)
+            .update({
+              pacientes: this.assignedPatients
+            });
 
-    for(let i=0; i < this.assignedPatients.length ; i++){
-      
-      this.db.list(this.path, {
-        query: {
-          orderByChild: 'cedula',
-          equalTo: this.assignedPatients[i].cedulaPaciente
-        }
-      }).subscribe(user =>{
-        if(user.length > 0){
-          this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
-          .update({
-            tieneFisio: true
+        for(let i=0; i < this.assignedPatients.length ; i++){
+          
+          this.db.list(this.path, {
+            query: {
+              orderByChild: 'cedula',
+              equalTo: this.assignedPatients[i].cedulaPaciente
+            }
+          }).subscribe(user =>{
+            if(user.length > 0){
+              this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
+              .update({
+                tieneFisio: true
+              });
+            }
           });
         }
-      });
+    }else{
+      alert('Selecciona un Fisioterapeuta');
     }
+
    }
 
   detachPatient(p, physiosPatientsList){
@@ -127,19 +134,20 @@ export class PatientsPhysioComponent implements OnInit {
         pacientes: physiosPatientsList.pacientes
       });
 
-      this.db.list(this.path, {
-        query: {
-          orderByChild: 'cedula',
-          equalTo: p.cedulaPaciente
-        }
-      }).subscribe(user =>{
-        if(user.length > 0){
-          this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
-          .update({
-            tieneFisio: false
+      setTimeout(() => {    
+          this.db.list(this.path, {
+            query: {
+              orderByChild: 'cedula',
+              equalTo: p.cedulaPaciente
+            }
+          }).subscribe(user =>{
+              this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
+                    .update({
+                      tieneFisio: false
+                    });
           });
-        }
-      });
+      }, 2000); 
+
     }
   }
 

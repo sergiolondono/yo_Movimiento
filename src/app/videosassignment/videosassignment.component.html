@@ -22,34 +22,35 @@
     </div>
 </div>
 
-<div class="row" *ngIf="canShowListVideos">
-<div class="col-6">
+<div class="table-responsive">
+  <div class="row" *ngIf="canShowListVideos">
+    <div class="col-sm-12 col-md-6">
 
-    <div class="container mt-2">
-        
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" 
-            href="#Sedente" (click)="changePathYoutube('sedentes')">Sedentes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" 
-            href="#bipedos" (click)="changePathYoutube('bipedos')">Bípedos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" 
-            href="#cuadrupedos" (click)="changePathYoutube('cuadrupedos')">Cuadrúpedos</a>
-          </li>
-        </ul>
-    </div>
+      <div class="container mt-2">
+          
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" 
+              (click)="changePathYoutube('sedentes')">Sedentes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" 
+              (click)="changePathYoutube('bipedos')">Bípedos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" 
+              (click)="changePathYoutube('cuadrupedos')">Cuadrúpedos</a>
+            </li>
+          </ul>
+      </div>
     
       <div class="tab-content">
           
-          <div class="container" id="Sedente">
+          <div role="tabpanel" class="tab-pane fade" class="container" id="Sedente">
               <div class="text-center form-group">
                   <div class="form-group">                
                     <p>
-                    <b>SEDENTES: {{sumCurrently}} / {{results}}</b>
+                    <b>{{typeVideos}}: {{sumCurrently}} / {{results}}</b>
                   </p></div>
                   
                   <button type="button" class="btn btn-success" *ngIf="isVisibleLast"
@@ -62,119 +63,8 @@
                   </button>
               </div>
     
-              <table class="table table-striped table-bordered table-hover text-center">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th style="color:#ffc107">Imagen</th>
-                      <th style="color:#ffc107">URL</th>
-                      <th style="color:#ffc107">Observaciones</th>
-                      <th style="color:#ffc107">Seleccionar</th>                    
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let video of playlistYoutube.items | slice:0">
-                      <th><img src="{{video.snippet.thumbnails.default.url}}" 
-                        alt="{{video.snippet.title}}"></th>
-                      <td><a href="https://www.youtube.com/watch?v={{video.snippet.resourceId.videoId}}"
-                        target="_blank">{{video.snippet.title}}</a> </td>
-                      <td><textarea class="form-control" rows="5" #observacion id="comment"></textarea></td>
-                      <td>
-                        <button class="btn btn-success" 
-                          (click)="addRow(video, observacion.value, selectedOptionPatients.value)">
-                          Asignar</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>      
-                
-                <div class="text-center form-group">
-                    <div class="form-group"><p><b>{{sumCurrently}} / {{results}}</b></p></div>
-                    
-                    <button type="button" class="btn btn-success" *ngIf="isVisibleLast"
-                    (click)="nextPage(playlistYoutube.prevPageToken,resultCurrently,'last')">
-                        << Anterior
-                    </button>
-                    <button type="button" class="btn btn-success" *ngIf="isVisibleNext"
-                    (click)="nextPage(playlistYoutube.nextPageToken,resultCurrently, 'next')">
-                    Siguiente >>
-                    </button>
-                </div>     
-          </div>
-
-          <div class="container" id="bipedos">
-              <div class="text-center form-group">
-                  <div class="form-group">                
-                    <p>
-                    <b>SEDENTES: {{sumCurrently}} / {{results}}</b>
-                  </p></div>
-                  
-                  <button type="button" class="btn btn-success" *ngIf="isVisibleLast"
-                  (click)="nextPage(playlistYoutube.prevPageToken,resultCurrently,'last')">
-                      << Anterior
-                  </button>
-                  <button type="button" class="btn btn-success" *ngIf="isVisibleNext"
-                  (click)="nextPage(playlistYoutube.nextPageToken,resultCurrently, 'next')">
-                    Siguiente >>
-                  </button>
-              </div>
-    
-              <table class="table table-striped table-bordered table-hover text-center">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th style="color:#ffc107">Imagen</th>
-                      <th style="color:#ffc107">URL</th>
-                      <th style="color:#ffc107">Observaciones</th>
-                      <th style="color:#ffc107">Seleccionar</th>                    
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let video of playlistYoutube.items | slice:0">
-                      <th><img src="{{video.snippet.thumbnails.default.url}}" 
-                        alt="{{video.snippet.title}}"></th>
-                      <td><a href="https://www.youtube.com/watch?v={{video.snippet.resourceId.videoId}}"
-                        target="_blank">{{video.snippet.title}}</a> </td>
-                      <td><textarea class="form-control" rows="5" #observacion id="comment"></textarea></td>
-                      <td>
-                        <button class="btn btn-success" 
-                          (click)="addRow(video, observacion.value, selectedOptionPatients.value)">
-                          Asignar</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>      
-                
-                <div class="text-center form-group">
-                    <div class="form-group"><p><b>{{sumCurrently}} / {{results}}</b></p></div>
-                    
-                    <button type="button" class="btn btn-success" *ngIf="isVisibleLast"
-                    (click)="nextPage(playlistYoutube.prevPageToken,resultCurrently,'last')">
-                        << Anterior
-                    </button>
-                    <button type="button" class="btn btn-success" *ngIf="isVisibleNext"
-                    (click)="nextPage(playlistYoutube.nextPageToken,resultCurrently, 'next')">
-                    Siguiente >>
-                    </button>
-                </div>     
-          </div>
-          
-          <div class="container" id="cuadrupedos">
-              <div class="text-center form-group">
-                  <div class="form-group">                
-                    <p>
-                    <b>SEDENTES: {{sumCurrently}} / {{results}}</b>
-                  </p></div>
-                  
-                  <button type="button" class="btn btn-success" *ngIf="isVisibleLast"
-                  (click)="nextPage(playlistYoutube.prevPageToken,resultCurrently,'last')">
-                      << Anterior
-                  </button>
-                  <button type="button" class="btn btn-success" *ngIf="isVisibleNext"
-                  (click)="nextPage(playlistYoutube.nextPageToken,resultCurrently, 'next')">
-                    Siguiente >>
-                  </button>
-              </div>
-    
-              <table class="table table-striped table-bordered table-hover text-center">
+              <table class="table table-responsive table-striped table-bordered 
+              table-hover text-center">
                   <thead class="thead-dark">
                     <tr>
                       <th style="color:#ffc107">Imagen</th>
@@ -213,103 +103,106 @@
                 </div>     
           </div>
         </div>
-    
+    </div>
 
 
-</div>
+    <div class="col-sm-12 col-md-6">
+        <div class="container">
+            <div class="form-group text-center form-group"><p><b>--</b></p></div>
+
+            <div class="text-center form-group">
+                <button type="button" class="btn btn-success"
+                (click)="saveList(videosSelected, selectedOptionPatients.value)">
+                    Asignar al paciente
+                </button>
+            </div>
+
+            <table class="table table-striped table-bordered 
+            table-hover text-center">
+                <thead class="thead-dark">
+                  <tr>
+                    <th style="color:#ffc107">Paciente</th>
+                    <th style="color:#ffc107">Imagen</th>
+                    <th style="color:#ffc107">URL</th>
+                    <th style="color:#ffc107">Descripción</th>
+                    <th style="color:#ffc107">Borrar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let videoUser of videosSelected">
+                  <th>{{patientSelected}}</th>
+                    <th><img src="{{videoUser.imagenUrl}}" alt="{{videoUser.title}}"></th>
+                    <td><a href="https://www.youtube.com/watch?v={{videoUser.videoId}}"
+                      target="_blank">{{videoUser.titulo}}</a> </td>                    
+                    <td>{{videoUser.observacion}}</td>
+                    <td><button class="btn btn-danger" (click)="deleteVideo(videoUser)">Borrar</button></td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="videosSelected.length <= 0"> 
+                  <tr><th colspan="5">No hay registros</th></tr>
+                </tfoot>
+              </table>   
 
 
-<div class="col-6">
-    <div class="container">
-        <div class="form-group text-center form-group"><p><b>--</b></p></div>
-
-        <div class="text-center form-group">
-            <button type="button" class="btn btn-success"
-            (click)="saveList(videosSelected, selectedOptionPatients.value)">
-                Asignar al paciente
-            </button>
-        </div>
-
-        <table class="table table-striped table-bordered table-hover text-center">
-            <thead class="thead-dark">
-              <tr>
-                <th style="color:#ffc107">Paciente</th>
-                <th style="color:#ffc107">Imagen</th>
-                <th style="color:#ffc107">URL</th>
-                <th style="color:#ffc107">Descripción</th>
-                <th style="color:#ffc107">Borrar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let videoUser of videosSelected">
-               <th>{{patientSelected}}</th>
-                <th><img src="{{videoUser.imagenUrl}}" alt="{{videoUser.title}}"></th>
-                <td><a href="https://www.youtube.com/watch?v={{videoUser.videoId}}"
-                  target="_blank">{{videoUser.titulo}}</a> </td>                    
-                <td>{{videoUser.observacion}}</td>
-                <td><button class="btn btn-danger" (click)="deleteVideo(videoUser)">Borrar</button></td>
-              </tr>
-            </tbody>
-            <tfoot *ngIf="videosSelected.length <= 0"> 
-              <tr><th colspan="5">No hay registros</th></tr>
-            </tfoot>
-          </table>   
-
-
-          <div class="row" >
-              <div class="col-12">
-                <div class="card text-center" 
-                style="width:100%;margin-top:1%;">
-                    <div class="card-header">
-                        <b>Videos asignados al paciente previamente</b>
+              <div>
+                  <div class="col-12">
+                    <div class="card text-center" 
+                    style="margin-top:1%;">
+                        <div class="card-header">
+                            <b>Videos asignados al paciente previamente</b>
+                          </div>
+                        <div class="card-body">
+                            <!-- <table class="table table-striped table-bordered table-hover text-center">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th>Paciente</th>
+                                    <th>Imagen</th>
+                                    <th>URL</th>
+                                    <th>Descripción</th>
+                                    <th>Borrar</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let videoUser of videosSavedDb">
+                                  <th>{{patientSelected}}</th>
+                                    <th><img src="{{videoUser.imagenUrl}}" alt="{{videoUser.title}}"></th>
+                                    <td><a href="https://www.youtube.com/watch?v={{videoUser.videoId}} ">{{videoUser.titulo}}</a> </td>                    
+                                    <td>{{videoUser.observacion}}</td>
+                                    <td><button class="btn btn-danger" (click)="deleteVideoDb(videoUser)">Borrar</button></td>
+                                  </tr>
+                                </tbody>
+                              </table>   -->
+                              
+                              <table class="table table-responsive table-striped table-bordered 
+                              table-hover text-center">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                        <th style="color:#ffc107">Imagen</th>
+                                        <th style="color:#ffc107">URL</th>
+                                        <th style="color:#ffc107">Descripción</th>
+                                        <th style="color:#ffc107">Borrar</th>              
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let video of videosByUser">
+                                      <th><img src="{{video.imagenUrl}}" alt="{{video.titulo}}"></th>
+                                      <td><a href="https://www.youtube.com/watch?v={{video.videoId}}"
+                                        target="_blank">{{video.titulo}}</a> </td>                    
+                                      <td>{{video.observacion}}</td>
+                                      <td>
+                                        <button class="btn btn-danger" 
+                                          (click)="deleteVideoAssignment(video)">
+                                          Borrar</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table> 
+                        </div>
                       </div>
-                    <div class="card-body">
-                        <!-- <table class="table table-striped table-bordered table-hover text-center">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th>Paciente</th>
-                                <th>Imagen</th>
-                                <th>URL</th>
-                                <th>Descripción</th>
-                                <th>Borrar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr *ngFor="let videoUser of videosSavedDb">
-                               <th>{{patientSelected}}</th>
-                                <th><img src="{{videoUser.imagenUrl}}" alt="{{videoUser.title}}"></th>
-                                <td><a href="https://www.youtube.com/watch?v={{videoUser.videoId}} ">{{videoUser.titulo}}</a> </td>                    
-                                <td>{{videoUser.observacion}}</td>
-                                <td><button class="btn btn-danger" (click)="deleteVideoDb(videoUser)">Borrar</button></td>
-                              </tr>
-                            </tbody>
-                          </table>   -->
-                          
-                          <table class="table table-striped table-bordered table-hover text-center">
-                              <thead class="thead-dark">
-                                <tr>
-                                    <th style="color:#ffc107">Imagen</th>
-                                    <th style="color:#ffc107">URL</th>
-                                    <th style="color:#ffc107">Descripción</th>
-                                    <th style="color:#ffc107">Borrar</th>              
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let video of videosByUser">
-                                  <th><img src="{{video.imagenUrl}}" alt="{{video.titulo}}"></th>
-                                  <td><a href="https://www.youtube.com/watch?v={{video.videoId}}"
-                                    target="_blank">{{video.titulo}}</a> </td>                    
-                                  <td>{{video.observacion}}</td>
-                                  <td>
-                                    <button class="btn btn-danger" 
-                                      (click)="deleteVideoAssignment(video)">
-                                      Borrar</button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table> 
                     </div>
-                  </div>
-                </div>
+              </div>
           </div>
+    </div>
+  </div>
 </div>
+
