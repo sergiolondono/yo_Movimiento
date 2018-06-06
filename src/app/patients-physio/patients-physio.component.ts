@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 import { fadeInItems } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-patients-physio',
@@ -21,34 +22,46 @@ export class PatientsPhysioComponent implements OnInit {
   path = '/usuariosApp/';
   assignedPatients: any[] = [];
   physioSelected: any;
-    
-  ngOnInit() {
-  }
+  subscription: Subscription;
+  
+  index;
+
+  ngOnInit() { }
 
   constructor(private db: AngularFireDatabase,
     private route: ActivatedRoute,
     private router: Router) { 
-
     
-    this.sub = this.route
-      .queryParams
+    this.sub = this.route.queryParams
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
         this.userRegistred = params['userIdentification'] ;
       });
 
-     this.patients$ = db.list(this.path, {
+      this.loadPatientsPhysios();
+      this.loadPatientsAvailable();
+  }
+
+  loadPatientsAvailable(){
+    this.db.list(this.path, {
       query: {
         orderByChild: 'perfil',
         equalTo: '2'
         }
-      })
-    // .subscribe(usersInDb  =>{
-    //   this.patients$ = usersInDb;
-    // });
+    }).subscribe(userInDb =>{
+      this.patients$ = userInDb;
 
-    this.loadPatientsPhysios();
-    
+      for(let i = 0; i < this.physiosPatientsList$.length ; i++){
+            if(this.physiosPatientsList$[i].pacientes){
+              for(let j = 0; j < this.physiosPatientsList$[i].pacientes.length ; j++){
+
+               this.patients$
+                .splice(this.patients$.findIndex(ap => ap.cedula == 
+                this.physiosPatientsList$[i].pacientes[j].cedulaPaciente), 1);
+              }
+            }
+          }
+    });
   }
 
   loadPatientsPhysios(){
@@ -69,6 +82,7 @@ export class PatientsPhysioComponent implements OnInit {
       }
     });
   }
+
   assignPatient(idUser, nameUser){
     if(!this.assignedPatients.find(ap => ap.cedulaPaciente == idUser))
     {
@@ -100,22 +114,25 @@ export class PatientsPhysioComponent implements OnInit {
               pacientes: this.assignedPatients
             });
 
-        for(let i=0; i < this.assignedPatients.length ; i++){
+        this.loadPatientsAvailable();
+
+        this.assignedPatients = [];
+        // for(let i=0; i < this.assignedPatients.length ; i++){
           
-          this.db.list(this.path, {
-            query: {
-              orderByChild: 'cedula',
-              equalTo: this.assignedPatients[i].cedulaPaciente
-            }
-          }).subscribe(user =>{
-            if(user.length > 0){
-              this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
-              .update({
-                tieneFisio: true
-              });
-            }
-          });
-        }
+        //   this.db.list(this.path, {
+        //     query: {
+        //       orderByChild: 'cedula',
+        //       equalTo: this.assignedPatients[i].cedulaPaciente
+        //     }
+        //   }).subscribe(user =>{
+        //     if(user.length > 0){
+        //       this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
+        //       .update({
+        //         tieneFisio: true
+        //       });
+        //     }
+        //   });
+        // }
     }else{
       alert('Selecciona un Fisioterapeuta');
     }
@@ -134,21 +151,13 @@ export class PatientsPhysioComponent implements OnInit {
         pacientes: physiosPatientsList.pacientes
       });
 
-      setTimeout(() => {    
-          this.db.list(this.path, {
-            query: {
-              orderByChild: 'cedula',
-              equalTo: p.cedulaPaciente
-            }
-          }).subscribe(user =>{
-              this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
-                    .update({
-                      tieneFisio: false
-                    });
-          });
-      }, 2000); 
+      this.loadPatientsAvailable();
 
     }
   }
+
+
+    
+  
 
 }

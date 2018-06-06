@@ -1,20 +1,23 @@
 
 
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   // angular 4 firebase authentication
   // https://gist.github.com/codediodeio/5e02b605f2ab015f2fb1e60497bd46bf
 
    userInDb: any[];
    person: any;
+
+   subscription: Subscription;
 
   constructor(private router: Router, private db: AngularFireDatabase) { }
 
@@ -29,7 +32,7 @@ export class AppComponent {
     }
 
   public validateUserRoute(userIdentification: any){      
-    this.db.list('/usuariosApp/', {
+    this.subscription = this.db.list('/usuariosApp/', {
       query:{
         orderByChild: 'cedula',
         equalTo: userIdentification //'114587'
@@ -63,5 +66,8 @@ export class AppComponent {
     
   }
 
-
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+  
 }

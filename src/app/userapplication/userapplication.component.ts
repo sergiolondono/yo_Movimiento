@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-userapplication',
   templateUrl: './userapplication.component.html',
   styleUrls: ['./userapplication.component.css']
 })
-export class UserapplicationComponent implements OnInit {
+export class UserapplicationComponent implements OnInit, OnDestroy {
 
   perfiles;
   userSavedDb:any[];
@@ -18,8 +19,13 @@ export class UserapplicationComponent implements OnInit {
   showUsers: boolean;
   path = '/usuariosApp/';
 
+  subscription: Subscription;
+  subscriptionGetAllUsers: Subscription;
+  subscriptionSearchUserbyId: Subscription;
+  subscriptionSubmit: Subscription;
+
   constructor(private db: AngularFireDatabase) { 
-    this.db.list('/perfiles/')
+    this.subscription = this.db.list('/perfiles/')
     .subscribe(profiles => {
       this.perfiles = profiles;
     });
@@ -33,8 +39,26 @@ export class UserapplicationComponent implements OnInit {
     this.usuariosApp$ = this.db.list(this.path);
   }
 
+  ngOnDestroy(){
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+
+    if(this.subscriptionGetAllUsers){
+      this.subscriptionGetAllUsers.unsubscribe();
+    }
+
+    if(this.subscriptionSearchUserbyId){
+      this.subscriptionSearchUserbyId.unsubscribe();
+    }
+
+    if(this.subscriptionSubmit){
+      this.subscriptionSubmit.unsubscribe();
+    }          
+  }
+
   getAllUsers(){
-    this.db.list(this.path)
+    this.subscriptionGetAllUsers = this.db.list(this.path)
     .subscribe(usersToShow =>{
       this.usersToShow = usersToShow;
       this.showUsers = true;
@@ -42,7 +66,7 @@ export class UserapplicationComponent implements OnInit {
   }
 
   searchUserbyId(textoBusqueda){
-    this.db.list(this.path, {
+    this.subscriptionSearchUserbyId = this.db.list(this.path, {
       query:{
         orderByChild: 'cedula',
         equalTo: textoBusqueda
@@ -61,7 +85,7 @@ export class UserapplicationComponent implements OnInit {
    
     const fFields = f.form.controls;
     
-    this.db.list(this.path, {
+    this.subscriptionSubmit = this.db.list(this.path, {
       query:{
         orderByChild: 'cedula',
         equalTo: fFields.idUser.value

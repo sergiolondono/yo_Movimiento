@@ -29,7 +29,7 @@
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" (keydown.enter)="$event.preventDefault()">
-      <input class="form-control mr-sm-2" autofocus
+      <input class="form-control mr-sm-2" autofocus (keyup.enter)="validateUserRoute(userIdentification.value)"
       placeholder="Número de cédula" #userIdentification
        aria-label="Search">
       <button class="btn btn-outline-warning my-2 my-sm-0"  type="button"

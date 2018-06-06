@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { YoutubePlaylist } from '../services/youtube-playlist';
 import { Playlist } from "../models/playlist";
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
@@ -7,13 +7,14 @@ import { switchMap } from 'rxjs/operator/switchMap';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { resolve } from 'url';
 import { reject } from 'q';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-videosassignment',
   templateUrl: './videosassignment.component.html',
   styleUrls: ['./videosassignment.component.css']
 })
-export class VideosassignmentComponent implements OnInit {
+export class VideosassignmentComponent implements OnInit, OnDestroy {
 
   keyRowUser: any;
   private playlist:Playlist[];
@@ -49,10 +50,23 @@ export class VideosassignmentComponent implements OnInit {
    
    path = '/usuariosApp/';
 
+   subscription: Subscription;
+   subscriptionOnChange: Subscription;
+
    ngOnInit(){
     this.getplaylist();
- }
+  }
 
+  ngOnDestroy(){
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+
+    if(this.subscriptionOnChange){
+      this.subscriptionOnChange.unsubscribe();
+    }   
+  }
+  
    constructor(private youtubePlaylist:YoutubePlaylist, private db: AngularFireDatabase,
     private route: ActivatedRoute,
     private router: Router) { 
@@ -64,7 +78,7 @@ export class VideosassignmentComponent implements OnInit {
         this.userRegistred = params['userIdentification'] ;
       });
 
-      db.list(this.path, {
+      this.subscription = db.list(this.path, {
        query:{
          orderByChild: 'cedula',
          equalTo: this.userRegistred
@@ -132,7 +146,7 @@ export class VideosassignmentComponent implements OnInit {
      this.patientSelected = args.target.options[args.target.selectedIndex].text;
      this.canShowListVideos = true;
 
-      this.db.list(this.path, {
+      this.subscriptionOnChange = this.db.list(this.path, {
         query:{
           orderByChild: 'cedula',
           equalTo: args.target.value //'114587'

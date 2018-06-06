@@ -9,65 +9,68 @@
                 src="https://static.wixstatic.com/media/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png/v1/fill/w_110,h_116,al_c,usm_0.66_1.00_0.01/e9ce7f_4469924c4d674051a923cb268c5f00b3~mv2_d_3000_3000_s_4_2.png" 
                 alt="Card image cap">Asignación de pacientes
           </div>
-          <div class="card-body">    
-            <div class="row">
-              <div class="col-6">
-                  <select class="form-control" #selectedPhysio>
-                      <option value="-">-- Seleccione Fisioterapeuta --</option>
-                      <option *ngFor="let user of physios$" value={{user.$key}}>
-                        {{user.nombre}}
-                      </option>
-                    </select>
-              </div>
-              <div class="col-6">
-                <table class="table table-hover">
-                  <tr>
-                    <th>Pacientes</th>
-                    <th>Seleccionar</th>
-                  </tr>
-                  <tr *ngFor="let patient of patients$ | async">
-                        <td *ngIf="!patient.tieneFisio">     
-                            {{patient.nombre}}
-                        </td>
-                        <td *ngIf="!patient.tieneFisio">
-                            <input class="mx-4" type="checkbox" value={{patient.cedula}} 
-                            (click)="assignPatient(patient.cedula, patient.nombre)"/>
-                        </td>
-                  </tr>
-                </table>
-
-                <button class="btn btn-success"
-                (click)="savePatients(selectedPhysio.value)">Asignar paciente(s)</button>
-              </div>
-            </div>  
-
-            <div class="col-12 table-responsive mt-3">
-              <table class="table table-hover">
-                <tr>
-                  <th>Fisio</th>
-                  <th>Paciente</th>
-                  <th>Borrar</th>
-                </tr>
-                <tbody *ngFor="let pp of physiosPatientsList$">
-                  <tr>
-                    <td><b>{{pp.nombre}}</b></td>
-                    <td><i class="fa fa-user-circle"></i></td>
-                    <td><i class="fas fa-user-times"></i></td>
-                  </tr>
-                  <tr *ngFor="let p of pp.pacientes">
-                    <td><i class="fa fa-user-md"></i></td>
-                    <td>{{p.nombrePaciente}}</td>  
-                    <td>
-                      <button 
-                          class="btn btn-danger" (click)="detachPatient(p, pp)">
-                            Borrar</button>
-                    </td>                
-                  </tr>
-                </tbody>
-               
-              </table>
-            </div>
-
+          <div class="card-body">   
+                <div class="tab-content">
+                    <div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <select class="form-control" #selectedPhysio>
+                                    <option value="-">-- Seleccione Fisioterapeuta --</option>
+                                    <option *ngFor="let user of physios$" value={{user.$key}}>
+                                      {{user.nombre}}
+                                    </option>
+                                  </select>
+                            </div>
+                            <div class="col-6">
+                              <table class="table table-hover">
+                                <tr>
+                                  <th>Pacientes</th>
+                                  <th>Seleccionar</th>
+                                </tr>
+                                <tr *ngFor="let patient of patients$">
+                                      <td>     
+                                          {{patient.nombre}}
+                                      </td>
+                                      <td>
+                                          <input class="mx-4" type="checkbox" value={{patient.cedula}} 
+                                          (click)="assignPatient(patient.cedula, patient.nombre)"/>
+                                      </td>
+                                </tr>
+                              </table>
+              
+                              <button class="btn btn-success"
+                              (click)="savePatients(selectedPhysio.value)">Asignar paciente(s)</button>
+                            </div>
+                          </div>  
+              
+                          <div class="col-12 table-responsive mt-3">
+                            <table class="table table-hover">
+                              <tr>
+                                <th>Fisio</th>
+                                <th>Paciente</th>
+                                <th>Borrar</th>
+                              </tr>
+                              <tbody *ngFor="let pp of physiosPatientsList$">
+                                <tr>
+                                  <td><b>{{pp.nombre}}</b></td>
+                                  <td><i class="fa fa-user-circle"></i></td>
+                                  <td><i class="fas fa-user-times"></i></td>
+                                </tr>
+                                <tr *ngFor="let p of pp.pacientes">
+                                  <td><i class="fa fa-user-md"></i></td>
+                                  <td>{{p.nombrePaciente}}</td>  
+                                   <td>
+                                    <button 
+                                        class="btn btn-danger" (click)="detachPatient(p, pp)">
+                                          Borrar</button>
+                                  </td>                 
+                                </tr>
+                              </tbody>
+                             
+                            </table>
+                          </div>
+                    </div>
+                  </div>
           </div>
       </div>
     </div>    
