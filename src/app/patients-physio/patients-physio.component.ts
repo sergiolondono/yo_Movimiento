@@ -46,7 +46,7 @@ export class PatientsPhysioComponent implements OnInit, OnDestroy {
   }
 
   loadPatientsAvailable(){
-    this.db.list(this.path, {
+    this.subscriptionloadPatientsAvailable = this.db.list(this.path, {
       query: {
         orderByChild: 'perfil',
         equalTo: '2'
@@ -68,7 +68,7 @@ export class PatientsPhysioComponent implements OnInit, OnDestroy {
   }
 
   loadPatientsPhysios(){
-    this.db.list(this.path, {
+    this.subscriptionloadPatientsAvailable = this.db.list(this.path, {
       query:{ 
         orderByChild: 'perfil',
         equalTo: '3'
@@ -128,11 +128,12 @@ export class PatientsPhysioComponent implements OnInit, OnDestroy {
   }
 
   detachPatient(p, physiosPatientsList){
-
-    if(physiosPatientsList.pacientes.find((ap => ap.cedulaPaciente == p.cedulaPaciente)))
+    if(physiosPatientsList.pacientes.find(ap => ap.cedulaPaciente == p.cedulaPaciente))
     {
+      this.physios$.find(ap => ap.$key == physiosPatientsList.$key).pacientes
+
       physiosPatientsList.pacientes
-      .splice(this.assignedPatients.findIndex(ap => ap.cedulaPaciente == p.cedulaPaciente), 1);
+      .splice(physiosPatientsList.pacientes.findIndex(ap => ap.cedulaPaciente == p.cedulaPaciente), 1);
 
       this.db.object(this.path + physiosPatientsList.$key)
       .update({
@@ -140,7 +141,6 @@ export class PatientsPhysioComponent implements OnInit, OnDestroy {
       });
 
       this.loadPatientsAvailable();
-
     }
   }
 

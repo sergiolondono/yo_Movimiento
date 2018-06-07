@@ -46,7 +46,7 @@ export class AppComponent implements OnDestroy {
 
    ngOnInit(){
    this.router.navigate(['/home']);
-    //this.router.navigate(['/videosAssignment']);
+    //this.router.navigate(['/patientsPhysio']);
   }  
 
   toggleCollapsed(): void {

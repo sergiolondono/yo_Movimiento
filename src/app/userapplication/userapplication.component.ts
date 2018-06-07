@@ -104,7 +104,7 @@ implements OnInit, OnDestroy {
      if(this.userSavedDb){
        if(this.userSavedDb.length > 0)
        {
-        this.toastr.warning('El usuario ya se encuentra registrado en la base de datos!', 'Mensaje');
+        this.toastr.warning('El usuario ya se encuentra registrado en la base de datos!');
        }
        else{
         this.usuariosApp$.push({
@@ -112,7 +112,7 @@ implements OnInit, OnDestroy {
           nombre: fFields.username.value,
           perfil: fFields.cmbPerfil.value      
         }).then((resp) => {  
-          this.toastr.success('Usuario registrado correctamente!', 'Mensaje');                                    
+          this.toastr.success('Usuario registrado correctamente!');                                    
           f.reset();
           this.userSavedDb = [];
         },(err) => this.toastr.error(err));
