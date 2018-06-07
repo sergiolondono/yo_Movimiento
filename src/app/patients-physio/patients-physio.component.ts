@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 import { fadeInItems } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
+import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 
 @Component({
   selector: 'app-patients-physio',
   templateUrl: './patients-physio.component.html',
   styleUrls: ['./patients-physio.component.css']
 })
-export class PatientsPhysioComponent implements OnInit {
+export class PatientsPhysioComponent implements OnInit, OnDestroy {
 
   private sub: any;
   private userRegistred: any;
@@ -22,7 +23,8 @@ export class PatientsPhysioComponent implements OnInit {
   path = '/usuariosApp/';
   assignedPatients: any[] = [];
   physioSelected: any;
-  subscription: Subscription;
+  subscriptionloadPatientsAvailable: Subscription;
+  subscriptionloadPatientsPhysios: Subscription;
   
   index;
 
@@ -30,7 +32,8 @@ export class PatientsPhysioComponent implements OnInit {
 
   constructor(private db: AngularFireDatabase,
     private route: ActivatedRoute,
-    private router: Router) { 
+    private router: Router,
+    public toastr: ToastsManager) { 
     
     this.sub = this.route.queryParams
       .subscribe(params => {
@@ -117,27 +120,12 @@ export class PatientsPhysioComponent implements OnInit {
         this.loadPatientsAvailable();
 
         this.assignedPatients = [];
-        // for(let i=0; i < this.assignedPatients.length ; i++){
-          
-        //   this.db.list(this.path, {
-        //     query: {
-        //       orderByChild: 'cedula',
-        //       equalTo: this.assignedPatients[i].cedulaPaciente
-        //     }
-        //   }).subscribe(user =>{
-        //     if(user.length > 0){
-        //       this.db.object(this.path + user[0].$key) // Modificar la propiedad tieneFisio del paciente
-        //       .update({
-        //         tieneFisio: true
-        //       });
-        //     }
-        //   });
-        // }
+
     }else{
-      alert('Selecciona un Fisioterapeuta');
+      this.toastr.warning('Selecciona un Fisioterapeuta');
     }
 
-   }
+  }
 
   detachPatient(p, physiosPatientsList){
 
@@ -156,8 +144,13 @@ export class PatientsPhysioComponent implements OnInit {
     }
   }
 
-
-    
-  
+  ngOnDestroy(){
+    if(this.subscriptionloadPatientsAvailable){
+      this.subscriptionloadPatientsAvailable.unsubscribe();
+    }
+    if(this.subscriptionloadPatientsPhysios){
+      this.subscriptionloadPatientsPhysios.unsubscribe();
+    }
+  }
 
 }

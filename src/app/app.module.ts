@@ -22,8 +22,9 @@ import { PatientsPhysioComponent } from './patients-physio/patients-physio.compo
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthService } from './services/auth.service';
 
-// https://github.com/angular/angularfire2/issues/1078
-// https://github.com/angular/angularfire2/blob/master/docs/auth/getting-started.md
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import { ToastService } from './services/toast-service';
+
 
 const appRoutes: Routes = [ 
   {
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ToastModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     //MatComponentsModule,
@@ -73,7 +75,7 @@ const appRoutes: Routes = [
       { enableTracing: true }
     )
   ],
-  providers: [HttpUtilService,YoutubePlaylist,AuthService],
+  providers: [HttpUtilService,YoutubePlaylist,AuthService,ToastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

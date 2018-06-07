@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
         "styles.css"
       ],
       "scripts": [
@@ -59,6 +60,9 @@
   },
   "defaults": {
     "styleExt": "css",
-    "component": {}
+    "component": {},
+    "build": {
+        "preserveSymlinks": true
+    }
   }
 }

@@ -1,9 +1,11 @@
 
 
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'app-root',
@@ -11,25 +13,45 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnDestroy {
-  // angular 4 firebase authentication
-  // https://gist.github.com/codediodeio/5e02b605f2ab015f2fb1e60497bd46bf
 
    userInDb: any[];
    person: any;
-
+   collapsed = true;
    subscription: Subscription;
 
-  constructor(private router: Router, private db: AngularFireDatabase) { }
+  constructor(private router: Router, private db: AngularFireDatabase,
+              public toastr: ToastsManager, vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
+  }
+  
+  showSuccess() {
+    this.toastr.success('You are awesome!', 'Success!');
+  }
+
+  showError() {
+    this.toastr.error('This is not good!', 'Oops!');
+  }
+
+  showWarning() {
+    this.toastr.warning('You are being warned.', 'Alert!');
+  }
+
+  showInfo() {
+    this.toastr.info('Just some information for you.');
+  }
+  
+  showCustom() {
+    this.toastr.custom('<span style="color: red">Message in red.</span>', null, {enableHTML: true});
+  }
 
    ngOnInit(){
    this.router.navigate(['/home']);
     //this.router.navigate(['/videosAssignment']);
   }  
 
-    collapsed = true;
-    toggleCollapsed(): void {
-      this.collapsed = !this.collapsed;
-    }
+  toggleCollapsed(): void {
+    this.collapsed = !this.collapsed;
+  }
 
   public validateUserRoute(userIdentification: any){      
     this.subscription = this.db.list('/usuariosApp/', {
@@ -60,7 +82,7 @@ export class AppComponent implements OnDestroy {
       else{
         this.router.navigate(['/home']);
         this.person = null;
-        alert("El usuario no se encuentra registrado en el sistema");        
+        this.toastr.warning("El usuario no se encuentra registrado en el sistema");        
       }
     });
     

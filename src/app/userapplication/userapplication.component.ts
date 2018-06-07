@@ -3,12 +3,18 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
+import { ToastService } from '../services/toast-service';
+import { ToastOptions } from 'ng2-toastr';
+
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 @Component({
   selector: 'app-userapplication',
   templateUrl: './userapplication.component.html',
   styleUrls: ['./userapplication.component.css']
 })
-export class UserapplicationComponent implements OnInit, OnDestroy {
+export class UserapplicationComponent 
+implements OnInit, OnDestroy {
 
   perfiles;
   userSavedDb:any[];
@@ -24,7 +30,7 @@ export class UserapplicationComponent implements OnInit, OnDestroy {
   subscriptionSearchUserbyId: Subscription;
   subscriptionSubmit: Subscription;
 
-  constructor(private db: AngularFireDatabase) { 
+  constructor(private db: AngularFireDatabase, public toastr: ToastsManager) { 
     this.subscription = this.db.list('/perfiles/')
     .subscribe(profiles => {
       this.perfiles = profiles;
@@ -36,7 +42,7 @@ export class UserapplicationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.usuariosApp$ = this.db.list(this.path);
+    this.usuariosApp$ = this.db.list(this.path);    
   }
 
   ngOnDestroy(){
@@ -98,18 +104,18 @@ export class UserapplicationComponent implements OnInit, OnDestroy {
      if(this.userSavedDb){
        if(this.userSavedDb.length > 0)
        {
-         alert('El usuario ya se encuentra registrado en la base de datos');
+        this.toastr.warning('El usuario ya se encuentra registrado en la base de datos!', 'Mensaje');
        }
        else{
         this.usuariosApp$.push({
           cedula: fFields.idUser.value,
           nombre: fFields.username.value,
           perfil: fFields.cmbPerfil.value      
-        }).then((resp) => {                            
-          alert('Usuario registrado correctamente');
+        }).then((resp) => {  
+          this.toastr.success('Usuario registrado correctamente!', 'Mensaje');                                    
           f.reset();
           this.userSavedDb = [];
-        },(err) => alert(err));
+        },(err) => this.toastr.error(err));
           console.log(fFields);
       }
     }
