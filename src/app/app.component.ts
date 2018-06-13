@@ -14,6 +14,8 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class AppComponent implements OnDestroy {
 
+  imageSrc = require('./images/1.png');
+
    userInDb: any[];
    person: any;
    collapsed = true;

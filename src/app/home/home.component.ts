@@ -5,10 +5,20 @@ import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
+  template: `
+  <p class="text-center">
+        <img class="card-img-top" 
+        style="width: 85%; height: 95%; margin-top: 8%;"
+        src="{{imageSrc}}"
+        alt="Card image cap">
+  </p>
+  `,
+  //templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  imageSrc = require('../images/home.png');
 
   videosByUser;
   perfiles;
