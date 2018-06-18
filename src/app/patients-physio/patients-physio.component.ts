@@ -53,11 +53,10 @@ export class PatientsPhysioComponent implements OnInit, OnDestroy {
         }
     }).subscribe(userInDb =>{
       this.patients$ = userInDb;
-
       for(let i = 0; i < this.physiosPatientsList$.length ; i++){
             if(this.physiosPatientsList$[i].pacientes){
               for(let j = 0; j < this.physiosPatientsList$[i].pacientes.length ; j++){
-
+                
                this.patients$
                 .splice(this.patients$.findIndex(ap => ap.cedula == 
                 this.physiosPatientsList$[i].pacientes[j].cedulaPaciente), 1);
